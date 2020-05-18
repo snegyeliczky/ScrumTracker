@@ -14,6 +14,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -56,13 +57,22 @@ public class AuthService {
                     .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.toList());
 
+
             String token = jwtTokenServices.createToken(username, roles);
 
+            Cookie cookie = new Cookie("token",token);
+            cookie.setMaxAge(7*24*60*60);
+            cookie.setHttpOnly(true);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+
+            /*
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
             model.put("roles", roles);
             model.put("token", token);
-            return ResponseEntity.ok(model);
+             */
+            return ResponseEntity.ok(cookie.getMaxAge());
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid username/password supplied");
         }
