@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,13 +35,8 @@ public class AuthController {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final AuthenticationManager authenticationManager;
+    public AuthController( AppUserRepository users) {
 
-    private final JwtTokenServices jwtTokenServices;
-
-    public AuthController(AuthenticationManager authenticationManager, JwtTokenServices jwtTokenServices, AppUserRepository users) {
-        this.authenticationManager = authenticationManager;
-        this.jwtTokenServices = jwtTokenServices;
         this.passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
@@ -50,25 +47,7 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity signin(@RequestBody UserCredentials data) {
-        try {
-            String username = data.getUsername();
-            // authenticationManager.authenticate calls loadUserByUsername in CustomUserDetailsService
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));
-            List<String> roles = authentication.getAuthorities()
-                    .stream()
-                    .map(GrantedAuthority::getAuthority)
-                    .collect(Collectors.toList());
-
-            String token = jwtTokenServices.createToken(username, roles);
-
-            Map<Object, Object> model = new HashMap<>();
-            model.put("username", username);
-            model.put("roles", roles);
-            model.put("token", token);
-            return ResponseEntity.ok(model);
-        } catch (AuthenticationException e) {
-            throw new BadCredentialsException("Invalid username/password supplied");
-        }
+    public ResponseEntity signin(@RequestBody UserCredentials data, HttpServletResponse response) {
+        return authService.signIn(data,response);
     }
 }
