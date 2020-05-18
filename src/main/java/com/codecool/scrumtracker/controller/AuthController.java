@@ -3,6 +3,8 @@ package com.codecool.scrumtracker.controller;
 import com.codecool.scrumtracker.model.credentials.UserCredentials;
 import com.codecool.scrumtracker.repository.AppUserRepository;
 import com.codecool.scrumtracker.security.JwtTokenServices;
+import com.codecool.scrumtracker.service.AuthService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -10,6 +12,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +28,11 @@ import java.util.stream.Collectors;
 @RequestMapping("/auth")
 public class AuthController {
 
+    @Autowired
+    private AuthService authService;
+
+    private final PasswordEncoder passwordEncoder;
+
     private final AuthenticationManager authenticationManager;
 
     private final JwtTokenServices jwtTokenServices;
@@ -31,6 +40,13 @@ public class AuthController {
     public AuthController(AuthenticationManager authenticationManager, JwtTokenServices jwtTokenServices, AppUserRepository users) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenServices = jwtTokenServices;
+        this.passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+    @PostMapping("/registration")
+    public void registration(@RequestBody UserCredentials newUser){
+        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        authService.registration(newUser);
     }
 
     @PostMapping("/signin")
