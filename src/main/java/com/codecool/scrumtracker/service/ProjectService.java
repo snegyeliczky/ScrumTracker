@@ -5,6 +5,8 @@ import com.codecool.scrumtracker.model.Project;
 import com.codecool.scrumtracker.model.ScrumTable;
 import com.codecool.scrumtracker.model.Status;
 import com.codecool.scrumtracker.repository.ProjectRepository;
+import com.codecool.scrumtracker.repository.ScrumTableRepository;
+import com.codecool.scrumtracker.repository.StatusRepository;
 import com.codecool.scrumtracker.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,6 +24,12 @@ public class ProjectService {
     @Autowired
     Util util;
 
+    @Autowired
+    StatusRepository statusRepository;
+
+    @Autowired
+    ScrumTableRepository scrumTableRepository;
+
     public Project createNewProject(String projectName) {
 
         AppUser user = util.getUserFromContext();
@@ -38,8 +46,12 @@ public class ProjectService {
 
         Project newProject = Project.builder()
                 .table(table)
+                .author(user)
                 .title(projectName)
                 .build();
+
+        statusRepository.saveAll(initialStatuses);
+        scrumTableRepository.save(table);
         projectRepository.save(newProject);
         return newProject;
 
