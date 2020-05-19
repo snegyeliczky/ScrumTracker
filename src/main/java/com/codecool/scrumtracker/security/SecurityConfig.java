@@ -34,6 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/auth/**").permitAll()
                 .antMatchers("/").authenticated()
+                .antMatchers(HttpMethod.GET, "/projects/**").authenticated() // allowed only when signed in
+                .antMatchers(HttpMethod.POST, "/projects/**").authenticated() // allowed only when signed in
                 // allowed by anyone
                 .anyRequest().denyAll()// anything else is denied
                 .and()

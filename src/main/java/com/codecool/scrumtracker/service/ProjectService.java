@@ -52,4 +52,10 @@ public class ProjectService {
                 .position(position)
                 .build();
     }
+
+    public Set<Project> getMyProjects() {
+
+        AppUser user = util.getUserFromContext();
+        return projectRepository.getProjectByAuthor(user);
+    }
 }
