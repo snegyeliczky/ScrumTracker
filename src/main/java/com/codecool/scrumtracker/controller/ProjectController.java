@@ -17,6 +17,7 @@ public class ProjectController {
 
     @PostMapping("/create")
     public Project createNewProject(@RequestBody String projectName) {
+        System.out.println("in root");
         return projectService.createNewProject(projectName);
     }
 
