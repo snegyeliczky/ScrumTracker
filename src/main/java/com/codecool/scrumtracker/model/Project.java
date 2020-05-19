@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -29,5 +30,5 @@ public class Project {
     private ScrumTable table;
 
     @OneToMany
-    private List<AppUser> participants;
+    private Set<AppUser> participants;
 }

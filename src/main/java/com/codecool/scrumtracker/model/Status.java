@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -25,6 +26,8 @@ public class Status {
 
     private String statusName;
 
+    private int position;
+
     @OneToMany
-    private List<Task> tasks;
+    private Set<Task> tasks;
 }

@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -24,5 +25,5 @@ public class ScrumTable {
     private UUID id;
 
     @OneToMany
-    private List<Status> statuses;
+    private Set<Status> statuses;
 }
