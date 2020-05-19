@@ -47,7 +47,6 @@ public class AuthService {
     }
 
     public ResponseEntity signIn(UserCredentials data, HttpServletResponse response) {
-
         try {
             String username = data.getUsername();
             // authenticationManager.authenticate calls loadUserByUsername in CustomUserDetailsService
@@ -57,24 +56,22 @@ public class AuthService {
                     .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.toList());
 
-
             String token = jwtTokenServices.createToken(username, roles);
 
-            Cookie cookie = new Cookie("token",token);
-            cookie.setMaxAge(7*24*60*60);
+            Cookie cookie = new Cookie("token", token);
+            cookie.setMaxAge(24 * 60 * 60);
             cookie.setHttpOnly(true);
             cookie.setPath("/");
-            response.addCookie(cookie);
 
-            /*
+            response.addCookie(cookie);
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
             model.put("roles", roles);
             model.put("token", token);
-             */
             return ResponseEntity.ok(cookie.getMaxAge());
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid username/password supplied");
         }
     }
+
 }

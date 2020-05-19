@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UserCredentials {
 
-    private String Username;
+    private String username;
 
     private String password;
 

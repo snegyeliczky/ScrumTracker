@@ -29,14 +29,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .httpBasic().disable()
                 .csrf().disable()
+                .cors().and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
                 .antMatchers("/auth/**").permitAll()
-                .antMatchers("/").authenticated()
-                .antMatchers(HttpMethod.GET, "/projects/**").authenticated() // allowed only when signed in
-                .antMatchers(HttpMethod.POST, "/projects/**").authenticated() // allowed only when signed in
-                // allowed by anyone
+                .antMatchers(HttpMethod.GET, "/project/**").authenticated() // allowed only when signed in
+                .antMatchers(HttpMethod.POST, "/project/**").authenticated() // allowed only when signed in
                 .anyRequest().denyAll()// anything else is denied
                 .and()
                 .addFilterBefore(new JwtTokenFilter(jwtTokenServices), UsernamePasswordAuthenticationFilter.class);
