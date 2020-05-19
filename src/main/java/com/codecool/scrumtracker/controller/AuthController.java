@@ -33,7 +33,7 @@ public class AuthController {
 
     private final PasswordEncoder passwordEncoder;
 
-    public AuthController( AppUserRepository users) {
+    public AuthController() {
 
         this.passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }

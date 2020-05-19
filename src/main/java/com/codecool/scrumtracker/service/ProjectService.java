@@ -37,7 +37,6 @@ public class ProjectService {
                 .build();
 
         Project newProject = Project.builder()
-                .author(user)
                 .table(table)
                 .title(projectName)
                 .build();
