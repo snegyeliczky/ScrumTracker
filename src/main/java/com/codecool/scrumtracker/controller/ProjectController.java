@@ -1,6 +1,7 @@
 package com.codecool.scrumtracker.controller;
 
 import com.codecool.scrumtracker.model.Project;
+import com.codecool.scrumtracker.model.credentials.ProjectCredentials;
 import com.codecool.scrumtracker.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +17,8 @@ public class ProjectController {
     ProjectService projectService;
 
     @PostMapping("/create")
-    public Project createNewProject(@RequestBody String projectName) {
-        return projectService.createNewProject(projectName);
+    public Project createNewProject(@RequestBody ProjectCredentials project) {
+        return projectService.createNewProject(project);
     }
 
     @GetMapping("/getmyprojects")

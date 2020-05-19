@@ -4,6 +4,7 @@ import com.codecool.scrumtracker.model.AppUser;
 import com.codecool.scrumtracker.model.Project;
 import com.codecool.scrumtracker.model.ScrumTable;
 import com.codecool.scrumtracker.model.Status;
+import com.codecool.scrumtracker.model.credentials.ProjectCredentials;
 import com.codecool.scrumtracker.repository.ProjectRepository;
 import com.codecool.scrumtracker.repository.ScrumTableRepository;
 import com.codecool.scrumtracker.repository.StatusRepository;
@@ -30,7 +31,7 @@ public class ProjectService {
     @Autowired
     ScrumTableRepository scrumTableRepository;
 
-    public Project createNewProject(String projectName) {
+    public Project createNewProject(ProjectCredentials project) {
 
         AppUser user = util.getUserFromContext();
 
@@ -47,7 +48,7 @@ public class ProjectService {
         Project newProject = Project.builder()
                 .table(table)
                 .author(user)
-                .title(projectName)
+                .title(project.getProjectName())
                 .build();
 
         statusRepository.saveAll(initialStatuses);
