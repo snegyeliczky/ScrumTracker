@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin(allowCredentials = "true")
@@ -24,5 +25,10 @@ public class ProjectController {
     @GetMapping("/getmyprojects")
     public Set<Project> getMyProjects() {
         return projectService.getMyProjects();
+    }
+
+    @GetMapping("/{id}")
+    public Project getProjectById(@PathVariable UUID id) {
+        return projectService.getProjectById(id);
     }
 }

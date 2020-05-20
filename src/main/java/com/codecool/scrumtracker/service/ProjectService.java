@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Component
 public class ProjectService {
@@ -77,5 +78,9 @@ public class ProjectService {
     public Set<Project> getMyProjects() {
         AppUser user = util.getUserFromContext();
         return projectRepository.getProjectByAuthor(user);
+    }
+
+    public Project getProjectById(UUID id) {
+        return projectRepository.findById(id).get();
     }
 }
