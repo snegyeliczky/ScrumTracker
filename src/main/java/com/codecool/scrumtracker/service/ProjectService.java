@@ -31,19 +31,30 @@ public class ProjectService {
     @Autowired
     ScrumTableRepository scrumTableRepository;
 
-    public Project createNewProject(ProjectCredentials project) {
-
-        AppUser user = util.getUserFromContext();
-
+    private Set<Status> createBaseStatus() {
         Status toDo = createStatus("To Do", 1);
         Status inProgress = createStatus("In Progress", 2);
         Status done = createStatus("Done", 3);
-
         Set<Status> initialStatuses = new HashSet<>(Arrays.asList(toDo, inProgress, done));
+        return initialStatuses;
+    }
 
+
+
+    private ScrumTable createScrumTable(Set<Status> initialStatuses) {
         ScrumTable table = ScrumTable.builder()
                 .statuses(initialStatuses)
                 .build();
+        return table;
+    }
+
+
+    public Project createNewProject(ProjectCredentials project) {
+        AppUser user = util.getUserFromContext();
+
+        Set<Status> initialStates = createBaseStatus();
+
+        ScrumTable table = createScrumTable(initialStates);
 
         Project newProject = Project.builder()
                 .table(table)
@@ -51,11 +62,9 @@ public class ProjectService {
                 .title(project.getProjectName())
                 .build();
 
-        statusRepository.saveAll(initialStatuses);
+        statusRepository.saveAll(initialStates);
         scrumTableRepository.save(table);
-        projectRepository.save(newProject);
-        return newProject;
-
+        return projectRepository.save(newProject);
     }
 
     public Status createStatus(String name, int position) {
@@ -66,7 +75,6 @@ public class ProjectService {
     }
 
     public Set<Project> getMyProjects() {
-
         AppUser user = util.getUserFromContext();
         return projectRepository.getProjectByAuthor(user);
     }
