@@ -22,6 +22,8 @@ public class Task {
     @Id
     private UUID id;
 
+    private String title;
+
     @OneToOne
     private AppUser author;
 
