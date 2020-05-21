@@ -1,14 +1,13 @@
 package com.codecool.scrumtracker.service;
 
-import com.codecool.scrumtracker.model.AppUser;
-import com.codecool.scrumtracker.model.Project;
-import com.codecool.scrumtracker.model.ScrumTable;
-import com.codecool.scrumtracker.model.Status;
+import com.codecool.scrumtracker.model.*;
 import com.codecool.scrumtracker.model.credentials.ProjectCredentials;
 import com.codecool.scrumtracker.model.credentials.StatusCredentials;
+import com.codecool.scrumtracker.model.credentials.TaskCredentials;
 import com.codecool.scrumtracker.repository.ProjectRepository;
 import com.codecool.scrumtracker.repository.ScrumTableRepository;
 import com.codecool.scrumtracker.repository.StatusRepository;
+import com.codecool.scrumtracker.repository.TaskRepository;
 import com.codecool.scrumtracker.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,6 +23,9 @@ public class ProjectService {
 
     @Autowired
     Util util;
+
+    @Autowired
+    TaskRepository taskRepository;
 
     @Autowired
     StatusRepository statusRepository;
@@ -99,6 +101,22 @@ public class ProjectService {
         scrumTableRepository.save(table);
         projectRepository.save(project);
         return table;
+
+    }
+
+    public void addNewTask(TaskCredentials taskCredentials) {
+        AppUser user = util.getUserFromContext();
+        Status status = statusRepository.findById(taskCredentials.getStatusId()).get();
+        Task builtTask = Task.builder()
+                .author(user)
+                .title(taskCredentials.getTitle())
+                .build();
+        Set<Task> taskSet = status.getTasks();
+        taskSet.add(builtTask);
+        status.setTasks(taskSet);
+        taskRepository.save(builtTask);
+        statusRepository.save(status);
+
 
     }
 }
