@@ -1,6 +1,7 @@
 package com.codecool.scrumtracker.controller;
 
 import com.codecool.scrumtracker.model.Project;
+import com.codecool.scrumtracker.model.credentials.StatusCredentials;
 import com.codecool.scrumtracker.model.credentials.ProjectCredentials;
 import com.codecool.scrumtracker.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,5 +31,10 @@ public class ProjectController {
     @GetMapping("/{id}")
     public Project getProjectById(@PathVariable UUID id) {
         return projectService.getProjectById(id);
+    }
+
+    @PostMapping("/newstatus")
+    public Project addNewStatusToProject(@RequestBody StatusCredentials status) {
+        return projectService.addNewStatusToProject(status);
     }
 }

@@ -5,6 +5,7 @@ import com.codecool.scrumtracker.model.Project;
 import com.codecool.scrumtracker.model.ScrumTable;
 import com.codecool.scrumtracker.model.Status;
 import com.codecool.scrumtracker.model.credentials.ProjectCredentials;
+import com.codecool.scrumtracker.model.credentials.StatusCredentials;
 import com.codecool.scrumtracker.repository.ProjectRepository;
 import com.codecool.scrumtracker.repository.ScrumTableRepository;
 import com.codecool.scrumtracker.repository.StatusRepository;
@@ -12,10 +13,8 @@ import com.codecool.scrumtracker.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class ProjectService {
@@ -40,15 +39,12 @@ public class ProjectService {
         return initialStatuses;
     }
 
-
-
     private ScrumTable createScrumTable(Set<Status> initialStatuses) {
         ScrumTable table = ScrumTable.builder()
                 .statuses(initialStatuses)
                 .build();
         return table;
     }
-
 
     public Project createNewProject(ProjectCredentials project) {
         AppUser user = util.getUserFromContext();
@@ -82,5 +78,25 @@ public class ProjectService {
 
     public Project getProjectById(UUID id) {
         return projectRepository.findById(id).get();
+    }
+
+    public Project addNewStatusToProject(StatusCredentials status) {
+
+        Project project = projectRepository.findById(status.getProjectId()).get();
+        ScrumTable table = project.getTable();
+        List<Integer> positions = table.getStatuses().stream().map(column -> {
+            return column.getPosition();
+        }).collect(Collectors.toList());
+        Status newStatus = createStatus(status.getStatusName(), Collections.max(positions) + 1);
+        Set<Status> projectStatuses = table.getStatuses();
+
+        projectStatuses.add(newStatus);
+        table.setStatuses(projectStatuses);
+        project.setTable(table);
+        statusRepository.save(newStatus);
+        scrumTableRepository.save(table);
+        projectRepository.save(project);
+        return project;
+
     }
 }
