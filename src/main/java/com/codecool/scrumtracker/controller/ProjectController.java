@@ -1,6 +1,7 @@
 package com.codecool.scrumtracker.controller;
 
 import com.codecool.scrumtracker.model.Project;
+import com.codecool.scrumtracker.model.ScrumTable;
 import com.codecool.scrumtracker.model.credentials.StatusCredentials;
 import com.codecool.scrumtracker.model.credentials.ProjectCredentials;
 import com.codecool.scrumtracker.service.ProjectService;
@@ -34,7 +35,7 @@ public class ProjectController {
     }
 
     @PostMapping("/newstatus")
-    public Project addNewStatusToProject(@RequestBody StatusCredentials status) {
+    public ScrumTable addNewStatusToProject(@RequestBody StatusCredentials status) {
         return projectService.addNewStatusToProject(status);
     }
 }

@@ -80,7 +80,7 @@ public class ProjectService {
         return projectRepository.findById(id).get();
     }
 
-    public Project addNewStatusToProject(StatusCredentials status) {
+    public ScrumTable addNewStatusToProject(StatusCredentials status) {
 
         Project project = projectRepository.findById(status.getProjectId()).get();
         ScrumTable table = project.getTable();
@@ -96,7 +96,7 @@ public class ProjectService {
         statusRepository.save(newStatus);
         scrumTableRepository.save(table);
         projectRepository.save(project);
-        return project;
+        return table;
 
     }
 }
