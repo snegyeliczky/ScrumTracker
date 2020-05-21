@@ -84,10 +84,12 @@ public class ProjectService {
 
         Project project = projectRepository.findById(status.getProjectId()).get();
         ScrumTable table = project.getTable();
-        List<Integer> positions = table.getStatuses().stream().map(column -> {
-            return column.getPosition();
-        }).collect(Collectors.toList());
-        Status newStatus = createStatus(status.getStatusName(), Collections.max(positions) + 1);
+        int max = table.getStatuses()
+                .stream()
+                .mapToInt(Status::getPosition)
+                .max()
+                .getAsInt();
+        Status newStatus = createStatus(status.getStatusName(), max + 1);
         Set<Status> projectStatuses = table.getStatuses();
 
         projectStatuses.add(newStatus);
