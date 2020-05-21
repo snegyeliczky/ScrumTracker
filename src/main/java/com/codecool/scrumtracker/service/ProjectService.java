@@ -88,7 +88,7 @@ public class ProjectService {
                 .stream()
                 .mapToInt(Status::getPosition)
                 .max()
-                .getAsInt();
+                .orElse(0);
         Status newStatus = createStatus(status.getStatusName(), max + 1);
         Set<Status> projectStatuses = table.getStatuses();
 
