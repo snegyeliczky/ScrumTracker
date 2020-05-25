@@ -27,6 +27,8 @@ public class Task {
     @OneToOne
     private AppUser author;
 
+    private int position;
+
     private String description;
 
     private int businessValue;
