@@ -107,9 +107,15 @@ public class ProjectService {
     public void addNewTask(TaskCredentials taskCredentials) {
         AppUser user = util.getUserFromContext();
         Status status = statusRepository.findById(taskCredentials.getStatusId()).get();
+        int newPosition = status.getTasks()
+                .stream()
+                .mapToInt(Task::getPosition)
+                .max()
+                .orElse(0);
         Task builtTask = Task.builder()
                 .author(user)
                 .title(taskCredentials.getTitle())
+                .position(newPosition + 1)
                 .build();
         Set<Task> taskSet = status.getTasks();
         taskSet.add(builtTask);
