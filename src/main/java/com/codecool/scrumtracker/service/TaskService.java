@@ -19,7 +19,7 @@ public class TaskService {
     @Autowired
     TaskRepository taskRepository;
 
-    public void transferTask(TaskTransferCredentials credentials) {
+    public void changeTaskStatus(TaskTransferCredentials credentials) {
 
         Status fromStatus = statusRepository.findById(credentials.getFromStatusId()).get();
         Status toStatus = statusRepository.findById(credentials.getToStatusId()).get();

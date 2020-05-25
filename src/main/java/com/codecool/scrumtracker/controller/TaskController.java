@@ -14,8 +14,8 @@ public class TaskController {
     TaskService taskService;
 
     @PutMapping("/transfer")
-    public void transferTask(@RequestBody TaskTransferCredentials credentials) {
-        taskService.transferTask(credentials);
+    public void changeTaskStatus(@RequestBody TaskTransferCredentials credentials) {
+        taskService.changeTaskStatus(credentials);
     }
 
 }
