@@ -48,4 +48,9 @@ public class AuthController {
     public ResponseEntity signin(@RequestBody UserCredentials data, HttpServletResponse response) {
         return authService.signIn(data,response);
     }
+
+    @GetMapping("/logout")
+    public ResponseEntity logout(HttpServletResponse response) {
+        return authService.logout(response);
+    }
 }
