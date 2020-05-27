@@ -35,7 +35,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/auth/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/project/**").authenticated() // allowed only when signed in
-                .antMatchers(HttpMethod.POST, "/project/**").authenticated() // allowed only when signed in
+                .antMatchers(HttpMethod.POST, "/project/**").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/project/**").authenticated() // allowed only when signed in
                 .antMatchers(HttpMethod.PUT, "/task/**").authenticated() // allowed only when signed in
                 .anyRequest().denyAll()// anything else is denied
                 .and()

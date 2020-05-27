@@ -45,4 +45,14 @@ public class ProjectController {
     public void addNewTask(@RequestBody TaskCredentials task) {
         projectService.addNewTask(task);
     }
+
+    @DeleteMapping("/deletestatus/{id}")
+    public void deleteStatusFromProject(@PathVariable UUID id){
+        projectService.deleteStatusFromProject(id);
+    }
+
+    @GetMapping("/gettable/{id}")
+    public ScrumTable getScrumTableById(@PathVariable UUID id){
+       return projectService.getScrumTableById(id);
+    }
 }

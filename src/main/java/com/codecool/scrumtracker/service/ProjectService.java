@@ -125,4 +125,12 @@ public class ProjectService {
 
 
     }
+
+    public void deleteStatusFromProject(UUID id) {
+        statusRepository.deleteById(id);
+    }
+
+    public ScrumTable getScrumTableById(UUID id) {
+        return scrumTableRepository.findById(id).get();
+    }
 }
