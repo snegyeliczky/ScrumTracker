@@ -46,9 +46,10 @@ public class ProjectController {
         projectService.addNewTask(task);
     }
 
-    @DeleteMapping("/deletestatus/{id}")
-    public void deleteStatusFromProject(@PathVariable UUID id){
-        projectService.deleteStatusFromProject(id);
+    @DeleteMapping("/deletestatus")
+    public void deleteStatusFromProject(@RequestParam(value = "statusid")UUID statusId,
+                                        @RequestParam(value = "tableid")UUID tableId){
+        projectService.deleteStatusFromProject(statusId,tableId);
     }
 
     @GetMapping("/gettable/{id}")

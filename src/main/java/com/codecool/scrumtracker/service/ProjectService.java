@@ -126,8 +126,17 @@ public class ProjectService {
 
     }
 
-    public void deleteStatusFromProject(UUID id) {
-        statusRepository.deleteById(id);
+    public void deleteStatusFromProject(UUID statusId, UUID tableId) {
+
+        ScrumTable scrumTable = scrumTableRepository.findById(tableId).get();
+        Status status = statusRepository.findById(statusId).get();
+
+        Set<Status> statuses = scrumTable.getStatuses();
+        statuses.remove(status);
+
+        scrumTable.setStatuses(statuses);
+        scrumTableRepository.save(scrumTable);
+        statusRepository.deleteById(statusId);
     }
 
     public ScrumTable getScrumTableById(UUID id) {
