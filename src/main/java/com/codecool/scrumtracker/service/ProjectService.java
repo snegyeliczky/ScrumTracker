@@ -137,6 +137,10 @@ public class ProjectService {
         scrumTable.setStatuses(statuses);
         scrumTableRepository.save(scrumTable);
         statusRepository.deleteById(statusId);
+
+        status.getTasks().stream().forEach(task -> {
+            taskRepository.deleteById(task.getId());
+        });
     }
 
     public ScrumTable getScrumTableById(UUID id) {
