@@ -138,12 +138,14 @@ public class ProjectService {
         scrumTableRepository.save(scrumTable);
         statusRepository.deleteById(statusId);
 
-        status.getTasks().stream().forEach(task -> {
-            taskRepository.deleteById(task.getId());
-        });
+        deleteTasksFromDatabase(status.getTasks());
     }
 
     public ScrumTable getScrumTableById(UUID id) {
         return scrumTableRepository.findById(id).get();
+    }
+
+    private void deleteTasksFromDatabase(Set<Task> tasks) {
+        tasks.forEach(task -> taskRepository.deleteById(task.getId()));
     }
 }
