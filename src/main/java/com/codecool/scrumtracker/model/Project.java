@@ -30,6 +30,5 @@ public class Project {
     private ScrumTable table;
 
     @OneToMany
-
     private Set<AppUser> participants;
 }

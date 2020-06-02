@@ -148,25 +148,7 @@ public class ProjectService {
         tasks.forEach(task -> taskRepository.deleteById(task.getId()));
     }
 
-    private void deleteStatusesFromDatabase(Set<Status> statuses) {
-        statuses.forEach(status -> statusRepository.deleteById(status.getId()));
-    }
-
     public void deleteProjectById(UUID id) {
-
-        /*Project projectToDelete = projectRepository.findById(id).get();
-        ScrumTable tableToDelete = projectToDelete.getTable();
-        Set<Status> statusesToDelete = tableToDelete.getStatuses();
-        *//**
-         delete statuses and tasks from table ->
-         then delete scrumtable from repository ->
-         then delete project
-         **//*
-        statusesToDelete.forEach(status -> deleteTasksFromDatabase(status.getTasks()));
-        statusesToDelete.clear();
-        deleteStatusesFromDatabase(statusesToDelete);
-        scrumTableRepository.deleteById(tableToDelete.getId());
-        projectRepository.deleteById(projectToDelete.getId());*/
 
         projectRepository.deleteById(id);
     }
