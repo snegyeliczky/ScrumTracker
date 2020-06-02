@@ -5,6 +5,8 @@ import com.codecool.scrumtracker.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @CrossOrigin(allowCredentials = "true")
 @RequestMapping("/task")
@@ -18,5 +20,9 @@ public class TaskController {
         taskService.changeTaskStatus(credentials);
     }
 
+    @DeleteMapping("/delete/{id}")
+    public void deleteTaskById(@PathVariable UUID id) {
+        taskService.deleteTaskById(id);
+    }
 
 }

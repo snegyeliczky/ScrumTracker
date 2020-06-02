@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
+import java.util.UUID;
 
 @Component
 public class TaskService {
@@ -28,6 +29,17 @@ public class TaskService {
         toStatus.getTasks().add(task);
         statusRepository.save(fromStatus);
         statusRepository.save(toStatus);
+
+    }
+
+    public void deleteTaskById(UUID id) {
+        Task taskToDelete = taskRepository.findById(id).get();
+        Status status = statusRepository.findByTasksContains(taskToDelete).get();
+        Set<Task> tasks = status.getTasks();
+        tasks.remove(taskToDelete);
+        status.setTasks(tasks);
+        statusRepository.save(status);
+        taskRepository.deleteById(id);
 
     }
 }
