@@ -26,7 +26,7 @@ public class Project {
     @OneToOne
     private AppUser author;
 
-    @OneToOne
+    @OneToOne(cascade=CascadeType.ALL)
     private ScrumTable table;
 
     @OneToMany
