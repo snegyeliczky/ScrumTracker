@@ -56,4 +56,9 @@ public class ProjectController {
     public ScrumTable getScrumTableById(@PathVariable UUID id){
        return projectService.getScrumTableById(id);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteProjectById(@PathVariable UUID id) {
+        projectService.deleteProjectById(id);
+    }
 }

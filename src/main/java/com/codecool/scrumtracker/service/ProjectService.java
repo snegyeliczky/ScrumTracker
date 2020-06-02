@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Component
 public class ProjectService {
@@ -147,5 +146,20 @@ public class ProjectService {
 
     private void deleteTasksFromDatabase(Set<Task> tasks) {
         tasks.forEach(task -> taskRepository.deleteById(task.getId()));
+    }
+
+    public void deleteProjectById(UUID id) {
+
+        Project projectToDelete = projectRepository.findById(id).get();
+        ScrumTable tableToDelete = projectToDelete.getTable();
+        Set<Status> statusesToDelete = tableToDelete.getStatuses();
+        /**
+         delete statuses and tasks from table ->
+         then delete scrumtable from repository ->
+         then delete project
+         **/
+        statusesToDelete.forEach(status -> deleteStatusFromProject(status.getId(), tableToDelete.getId()));
+        scrumTableRepository.deleteById(tableToDelete.getId());
+        projectRepository.deleteById(projectToDelete.getId());
     }
 }
