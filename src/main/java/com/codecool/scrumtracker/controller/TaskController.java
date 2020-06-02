@@ -1,5 +1,6 @@
 package com.codecool.scrumtracker.controller;
 
+import com.codecool.scrumtracker.model.credentials.TaskCredentials;
 import com.codecool.scrumtracker.model.credentials.TaskTransferCredentials;
 import com.codecool.scrumtracker.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,4 +26,9 @@ public class TaskController {
         taskService.deleteTaskById(id);
     }
 
+    @PutMapping("/edit/{id}")
+    public void editTaskData(@PathVariable UUID taskId,
+                                    @RequestBody TaskCredentials taskCredentials) {
+        taskService.editTaskData(taskId, taskCredentials);
+    }
 }

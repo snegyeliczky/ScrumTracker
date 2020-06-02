@@ -14,5 +14,6 @@ import java.util.UUID;
 public class TaskCredentials {
     private UUID statusId;
     private String description;
+    private int businessValue;
     private String title;
 }

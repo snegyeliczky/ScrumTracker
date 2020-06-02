@@ -25,6 +25,7 @@ public class Task {
 
     private int position;
 
+    @Column(columnDefinition="TEXT")
     private String description;
 
     private int businessValue;
