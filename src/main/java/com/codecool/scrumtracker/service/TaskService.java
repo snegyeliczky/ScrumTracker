@@ -53,6 +53,7 @@ public class TaskService {
                 f.set(taskToEdit, f.get(this));
             }
         }
+        taskRepository.save(taskToEdit);
     }
 
 }
