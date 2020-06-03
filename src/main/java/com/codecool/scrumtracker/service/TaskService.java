@@ -48,12 +48,17 @@ public class TaskService {
     public void editTaskData(UUID taskId, TaskCredentials taskCredentials) throws IllegalAccessException, NoSuchFieldException {
 
         Task taskToEdit = taskRepository.findById(taskId).get();
-        for (Field f : taskCredentials.getClass().getDeclaredFields()) {
+        taskToEdit.setBusinessValue(taskCredentials.getBusinessValue());
+        taskToEdit.setDescription(taskCredentials.getDescription());
+        taskToEdit.setTitle(taskCredentials.getTitle());
+        /*for (Field f : taskCredentials.getClass().getDeclaredFields()) {
             if (f.get(this) != null) {
                 f.set(taskToEdit, f.get(this));
             }
         }
+        */
         taskRepository.save(taskToEdit);
+
     }
 
 }

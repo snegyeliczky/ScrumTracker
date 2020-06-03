@@ -26,7 +26,7 @@ public class TaskController {
         taskService.deleteTaskById(id);
     }
 
-    @PutMapping("/edit/{id}")
+    @PutMapping("/edit/{taskId}")
     public void editTaskData(@PathVariable UUID taskId,
                                     @RequestBody TaskCredentials taskCredentials) throws NoSuchFieldException, IllegalAccessException {
         taskService.editTaskData(taskId, taskCredentials);
