@@ -131,7 +131,14 @@ public class ProjectService {
         Status status = statusRepository.findById(statusId).get();
 
         Set<Status> statuses = scrumTable.getStatuses();
+        int position = status.getPosition();
         statuses.remove(status);
+        statuses.forEach(status1 -> {
+            if (status1.getPosition() > position) {
+                status1.setPosition(status1.getPosition() - 1);
+                statusRepository.save(status1);
+            }
+        });
 
         scrumTable.setStatuses(statuses);
         scrumTableRepository.save(scrumTable);
