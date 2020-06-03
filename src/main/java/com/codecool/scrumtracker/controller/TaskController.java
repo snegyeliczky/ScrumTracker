@@ -28,8 +28,8 @@ public class TaskController {
     }
 
     @PutMapping("/edit/{taskId}")
-    public void editTaskData(@PathVariable UUID taskId,
+    public Task editTaskData(@PathVariable UUID taskId,
                              @RequestBody Task taskCredentials) throws NoSuchFieldException, IllegalAccessException {
-        taskService.editTaskData(taskId, taskCredentials);
+        return taskService.editTaskData(taskId, taskCredentials);
     }
 }
