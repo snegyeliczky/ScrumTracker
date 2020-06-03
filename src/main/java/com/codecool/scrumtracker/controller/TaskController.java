@@ -1,5 +1,6 @@
 package com.codecool.scrumtracker.controller;
 
+import com.codecool.scrumtracker.model.Task;
 import com.codecool.scrumtracker.model.credentials.TaskCredentials;
 import com.codecool.scrumtracker.model.credentials.TaskTransferCredentials;
 import com.codecool.scrumtracker.service.TaskService;
@@ -28,7 +29,7 @@ public class TaskController {
 
     @PutMapping("/edit/{taskId}")
     public void editTaskData(@PathVariable UUID taskId,
-                                    @RequestBody TaskCredentials taskCredentials) throws NoSuchFieldException, IllegalAccessException {
+                             @RequestBody Task taskCredentials) throws NoSuchFieldException, IllegalAccessException {
         taskService.editTaskData(taskId, taskCredentials);
     }
 }
