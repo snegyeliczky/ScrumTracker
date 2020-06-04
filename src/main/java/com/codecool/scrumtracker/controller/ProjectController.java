@@ -65,7 +65,7 @@ public class ProjectController {
     }
 
     @PostMapping("/adduser/{projectId}")
-    public void addUserToProject(@PathVariable UUID projectId, @RequestBody UserCredentials userToAdd) {
-        projectService.addUserToProject(projectId, userToAdd);
+    public Set<AppUser> addUserToProject(@PathVariable UUID projectId, @RequestBody UserCredentials userToAdd) {
+        return projectService.addUserToProject(projectId, userToAdd);
     }
 }

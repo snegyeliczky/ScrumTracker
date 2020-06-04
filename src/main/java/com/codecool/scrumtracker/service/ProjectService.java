@@ -161,7 +161,7 @@ public class ProjectService {
         projectRepository.deleteById(id);
     }
 
-    public void addUserToProject(UUID projectId, UserCredentials userToAdd) {
+    public Set<AppUser> addUserToProject(UUID projectId, UserCredentials userToAdd) {
 
         Project project = projectRepository.findById(projectId).get();
         AppUser user = appUserRepository.findByUsername(userToAdd.getUsername()).get();
@@ -169,6 +169,7 @@ public class ProjectService {
         participants.add(user);
         project.setParticipants(participants);
         projectRepository.save(project);
+        return participants;
 
     }
 }
