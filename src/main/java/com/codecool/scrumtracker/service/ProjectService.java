@@ -4,10 +4,8 @@ import com.codecool.scrumtracker.model.*;
 import com.codecool.scrumtracker.model.credentials.ProjectCredentials;
 import com.codecool.scrumtracker.model.credentials.StatusCredentials;
 import com.codecool.scrumtracker.model.credentials.TaskCredentials;
-import com.codecool.scrumtracker.repository.ProjectRepository;
-import com.codecool.scrumtracker.repository.ScrumTableRepository;
-import com.codecool.scrumtracker.repository.StatusRepository;
-import com.codecool.scrumtracker.repository.TaskRepository;
+import com.codecool.scrumtracker.model.credentials.UserCredentials;
+import com.codecool.scrumtracker.repository.*;
 import com.codecool.scrumtracker.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,6 +29,9 @@ public class ProjectService {
 
     @Autowired
     ScrumTableRepository scrumTableRepository;
+
+    @Autowired
+    AppUserRepository appUserRepository;
 
     private Set<Status> createBaseStatus() {
         Status toDo = createStatus("To Do", 1);
@@ -158,5 +159,16 @@ public class ProjectService {
     public void deleteProjectById(UUID id) {
 
         projectRepository.deleteById(id);
+    }
+
+    public void addUserToProject(UUID projectId, UserCredentials userToAdd) {
+
+        Project project = projectRepository.findById(projectId).get();
+        AppUser user = appUserRepository.findByUsername(userToAdd.getUsername()).get();
+        Set<AppUser> participants = project.getParticipants();
+        participants.add(user);
+        project.setParticipants(participants);
+        projectRepository.save(project);
+
     }
 }

@@ -1,11 +1,13 @@
 package com.codecool.scrumtracker.controller;
 
+import com.codecool.scrumtracker.model.AppUser;
 import com.codecool.scrumtracker.model.Project;
 import com.codecool.scrumtracker.model.ScrumTable;
 import com.codecool.scrumtracker.model.Task;
 import com.codecool.scrumtracker.model.credentials.StatusCredentials;
 import com.codecool.scrumtracker.model.credentials.ProjectCredentials;
 import com.codecool.scrumtracker.model.credentials.TaskCredentials;
+import com.codecool.scrumtracker.model.credentials.UserCredentials;
 import com.codecool.scrumtracker.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -60,5 +62,10 @@ public class ProjectController {
     @DeleteMapping("/delete/{id}")
     public void deleteProjectById(@PathVariable UUID id) {
         projectService.deleteProjectById(id);
+    }
+
+    @PostMapping("/adduser/{projectId}")
+    public void addUserToProject(@PathVariable UUID projectId, @RequestBody UserCredentials userToAdd) {
+        projectService.addUserToProject(projectId, userToAdd);
     }
 }
