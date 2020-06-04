@@ -76,6 +76,8 @@ public class ProjectService {
     public Set<Project> getMyProjects() {
         AppUser user = util.getUserFromContext();
         Set<Project> projects = projectRepository.getProjectByAuthor(user);
+        Set<Project> participant = projectRepository.findProjectByParticipantsContains(user);
+        participant.forEach(project -> projects.add(project));
         return projects;
     }
 
