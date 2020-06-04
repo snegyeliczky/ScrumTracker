@@ -10,4 +10,5 @@ import java.util.UUID;
 public interface ProjectRepository extends JpaRepository<Project, UUID> {
 
     Set<Project> getProjectByAuthor(AppUser author);
+    Set<Project> getProjectByParticipantsContaining(AppUser user);
 }

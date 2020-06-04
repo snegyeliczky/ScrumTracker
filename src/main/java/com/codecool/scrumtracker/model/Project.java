@@ -29,6 +29,6 @@ public class Project {
     @OneToOne(cascade=CascadeType.ALL)
     private ScrumTable table;
 
-    @OneToMany
+    @ManyToMany
     private Set<AppUser> participants;
 }

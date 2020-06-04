@@ -75,7 +75,8 @@ public class ProjectService {
 
     public Set<Project> getMyProjects() {
         AppUser user = util.getUserFromContext();
-        return projectRepository.getProjectByAuthor(user);
+        Set<Project> projects = projectRepository.getProjectByAuthor(user);
+        return projects;
     }
 
     public Project getProjectById(UUID id) {
