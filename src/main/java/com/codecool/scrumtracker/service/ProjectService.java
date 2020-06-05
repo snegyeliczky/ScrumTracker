@@ -82,6 +82,14 @@ public class ProjectService {
         return projects;
     }
 
+    public Set<Project> getMyProjectsWithoutArchive() {
+        AppUser user = util.getUserFromContext();
+        Set<Project> projects = projectRepository.getByAuthorAndArchiveIsFalse(user);
+        Set<Project> participate = projectRepository.findProjectsByParticipantsContainsAndAndArchiveIsFalse(user);
+        participate.forEach(project->projects.add(project));
+        return projects;
+    };
+
     public Project getProjectById(UUID id) {
         return projectRepository.findById(id).get();
     }
@@ -183,4 +191,5 @@ public class ProjectService {
         project.setArchive(!project.isArchive());
         projectRepository.save(project);
     }
+
 }

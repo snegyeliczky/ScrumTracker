@@ -30,8 +30,13 @@ public class ProjectController {
 
     @GetMapping("/getmyprojects")
     public Set<Project> getMyProjects() {
-        return projectService.getMyProjects();
+        return projectService.getMyProjectsWithoutArchive();
     }
+
+    @GetMapping("/getmyprojectswitharchive")
+    public Set<Project> getMyProjectsWithArchive(){
+        return projectService.getMyProjects();
+    };
 
     @GetMapping("/{id}")
     public Project getProjectById(@PathVariable UUID id) {
