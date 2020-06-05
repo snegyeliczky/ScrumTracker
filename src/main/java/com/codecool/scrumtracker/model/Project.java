@@ -21,6 +21,8 @@ public class Project {
     @Id
     private UUID id;
 
+    private boolean archive;
+
     private String title;
 
     @OneToOne

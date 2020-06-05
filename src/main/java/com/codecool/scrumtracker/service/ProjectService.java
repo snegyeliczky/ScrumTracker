@@ -59,6 +59,7 @@ public class ProjectService {
                 .table(table)
                 .author(user)
                 .title(project.getProjectName())
+                .archive(false)
                 .build();
 
         statusRepository.saveAll(initialStates);
