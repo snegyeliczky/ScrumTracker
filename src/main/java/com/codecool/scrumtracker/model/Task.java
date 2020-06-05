@@ -20,6 +20,8 @@ public class Task {
 
     private String title;
 
+    private boolean archive;
+
     @OneToOne
     private AppUser author;
 
