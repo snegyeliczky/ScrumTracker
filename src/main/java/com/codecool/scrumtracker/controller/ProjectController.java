@@ -28,15 +28,6 @@ public class ProjectController {
         return projectService.createNewProject(project);
     }
 
-    @GetMapping("/getmyprojects")
-    public Set<Project> getMyProjects() {
-        return projectService.getMyProjectsWithoutArchive();
-    }
-
-    @GetMapping("/getmyprojectswitharchive")
-    public Set<Project> getMyProjectsWithArchive(){
-        return projectService.getMyProjects();
-    };
 
     @GetMapping("/{id}")
     public Project getProjectById(@PathVariable UUID id) {
@@ -78,4 +69,32 @@ public class ProjectController {
     public Set<AppUser> addUserToProject(@PathVariable UUID projectId, @RequestBody UserCredentials userToAdd) {
         return projectService.addUserToProject(projectId, userToAdd);
     }
+
+
+    @GetMapping("/getmyprojects")
+    public Set<Project> getMyProjects() {
+        return projectService.getMyProjectsWithoutArchive();
+    }
+
+
+    @GetMapping("/getmyprojectswitharchive")
+    public Set<Project> getMyProjectsWithArchive(){
+        return projectService.getMyProjects();
+    };
+
+    @GetMapping("/getActiveProjects")
+    public Set<Project> getActiveProject(){
+        return projectService.getMyActiveProjects();
+    };
+
+    @GetMapping("/getParticipateProjects")
+    public Set<Project> getParticipateProjects(){
+        return projectService.getParticipateProjects();
+    }
+
+    @GetMapping("/getArchiveProjects")
+    public Set<Project> getArchiveProjects(){
+        return projectService.geArchiveProjects();
+    };
+
 }

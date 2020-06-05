@@ -74,21 +74,6 @@ public class ProjectService {
                 .build();
     }
 
-    public Set<Project> getMyProjects() {
-        AppUser user = util.getUserFromContext();
-        Set<Project> projects = projectRepository.getProjectByAuthor(user);
-        Set<Project> participant = projectRepository.findProjectByParticipantsContains(user);
-        participant.forEach(project -> projects.add(project));
-        return projects;
-    }
-
-    public Set<Project> getMyProjectsWithoutArchive() {
-        AppUser user = util.getUserFromContext();
-        Set<Project> projects = projectRepository.getByAuthorAndArchiveIsFalse(user);
-        Set<Project> participate = projectRepository.findProjectsByParticipantsContainsAndAndArchiveIsFalse(user);
-        participate.forEach(project->projects.add(project));
-        return projects;
-    };
 
     public Project getProjectById(UUID id) {
         return projectRepository.findById(id).get();
@@ -192,4 +177,38 @@ public class ProjectService {
         projectRepository.save(project);
     }
 
+    public Set<Project> getMyProjects() {
+        AppUser user = util.getUserFromContext();
+        Set<Project> projects = projectRepository.getProjectByAuthor(user);
+        Set<Project> participant = projectRepository.findProjectByParticipantsContains(user);
+        participant.forEach(project -> projects.add(project));
+        return projects;
+    }
+
+    public Set<Project> getMyProjectsWithoutArchive() {
+        AppUser user = util.getUserFromContext();
+        Set<Project> projects = projectRepository.getByAuthorAndArchiveIsFalse(user);
+        Set<Project> participate = projectRepository.findProjectsByParticipantsContainsAndAndArchiveIsFalse(user);
+        participate.forEach(project->projects.add(project));
+        return projects;
+    };
+
+    public Set<Project> getMyActiveProjects() {
+        AppUser user = util.getUserFromContext();
+        return projectRepository.getByAuthorAndArchiveIsFalse(user);
+    }
+
+    public Set<Project> getParticipateProjects() {
+        AppUser user = util.getUserFromContext();
+        Set<Project> projectsByParticipantsContainsAndAndArchiveIsFalse = projectRepository.findProjectsByParticipantsContainsAndAndArchiveIsFalse(user);
+        return projectRepository.findProjectsByParticipantsContainsAndAndArchiveIsFalse(user);
+    }
+
+    public Set<Project> geArchiveProjects() {
+        AppUser user = util.getUserFromContext();
+        Set<Project> projects = projectRepository.getProjectByAuthorAndArchiveIsTrue(user);
+        Set<Project> participants = projectRepository.getProjectByParticipantsContainsAndArchiveIsTrue(user);
+        participants.forEach(project -> projects.add(project));
+        return projects;
+    }
 }

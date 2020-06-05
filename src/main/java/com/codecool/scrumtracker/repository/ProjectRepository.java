@@ -18,4 +18,8 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
     Set<Project> findProjectByParticipantsContains(AppUser user);
 
     Set<Project> findProjectsByParticipantsContainsAndAndArchiveIsFalse(AppUser user);
+
+    Set<Project> getProjectByAuthorAndArchiveIsTrue(AppUser author);
+
+    Set<Project> getProjectByParticipantsContainsAndArchiveIsTrue(AppUser appUser);
 }
