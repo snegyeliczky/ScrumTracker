@@ -64,6 +64,11 @@ public class ProjectController {
         projectService.deleteProjectById(id);
     }
 
+    @PutMapping("/archive/{id}")
+    public void archiveProjectById(@PathVariable UUID id){
+        projectService.archiveProjectById(id);
+    }
+
     @PostMapping("/adduser/{projectId}")
     public Set<AppUser> addUserToProject(@PathVariable UUID projectId, @RequestBody UserCredentials userToAdd) {
         return projectService.addUserToProject(projectId, userToAdd);

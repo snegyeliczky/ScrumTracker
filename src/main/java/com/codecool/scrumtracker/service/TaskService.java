@@ -62,4 +62,9 @@ public class TaskService {
 
     }
 
+    public void archiveById(UUID id) {
+        Task task = taskRepository.findById(id).get();
+        task.setArchive(!task.isArchive());
+        taskRepository.save(task);
+    }
 }

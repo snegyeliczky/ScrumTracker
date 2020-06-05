@@ -177,4 +177,10 @@ public class ProjectService {
         return participants;
 
     }
+
+    public void archiveProjectById(UUID id) {
+        Project project = projectRepository.findById(id).get();
+        project.setArchive(!project.isArchive());
+        projectRepository.save(project);
+    }
 }

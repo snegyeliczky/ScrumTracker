@@ -22,6 +22,11 @@ public class TaskController {
         taskService.changeTaskStatus(credentials);
     }
 
+    @PutMapping("/archive/{id}")
+    public void archiveTaskById(@PathVariable UUID id){
+        taskService.archiveById(id);
+    }
+
     @DeleteMapping("/delete/{id}")
     public void deleteTaskById(@PathVariable UUID id) {
         taskService.deleteTaskById(id);
