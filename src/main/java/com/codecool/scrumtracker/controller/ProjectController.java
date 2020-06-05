@@ -82,17 +82,17 @@ public class ProjectController {
         return projectService.getMyProjects();
     };
 
-    @GetMapping("/getActiveProjects")
+    @GetMapping("/getactiveprojects")
     public Set<Project> getActiveProject(){
         return projectService.getMyActiveProjects();
     };
 
-    @GetMapping("/getParticipateProjects")
+    @GetMapping("/getparticipateprojects")
     public Set<Project> getParticipateProjects(){
         return projectService.getParticipateProjects();
     }
 
-    @GetMapping("/getArchiveProjects")
+    @GetMapping("/getarchiveprojects")
     public Set<Project> getArchiveProjects(){
         return projectService.geArchiveProjects();
     };
