@@ -68,7 +68,7 @@ public class AuthService {
             model.put("username", username);
             model.put("roles", roles);
             model.put("token", token);
-            return ResponseEntity.ok(cookie.getMaxAge());
+            return ResponseEntity.ok(data);
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid username/password supplied");
         }
