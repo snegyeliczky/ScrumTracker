@@ -70,12 +70,10 @@ public class ProjectController {
         return projectService.addUserToProject(projectId, userToAdd);
     }
 
-
     @GetMapping("/getmyprojects")
     public Set<Project> getMyProjects() {
         return projectService.getMyProjectsWithoutArchive();
     }
-
 
     @GetMapping("/getmyprojectswitharchive")
     public Set<Project> getMyProjectsWithArchive(){
