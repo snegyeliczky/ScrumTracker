@@ -45,7 +45,7 @@ public class EmailService /*implements EmailService*/ {
         });
         StringBuilder email = new StringBuilder();
         projectTasks.forEach(task -> {
-            email.append(task.getTitle() + " " + task.getDescription() + " ");
+            email.append(task.getStoryTitle() + " " + task.getUserStory() + " ");
         });
         sendSimpleMessage(emailAddress, project.getTitle(), email.toString());
     }

@@ -18,7 +18,15 @@ public class Task {
     @Id
     private UUID id;
 
-    private String title;
+    private String storyTitle;
+
+    @Column(columnDefinition="TEXT")
+    private String acceptanceCriteria;
+
+    @Column(columnDefinition="TEXT")
+    private String userStory;
+
+    private int businessValue;
 
     private boolean archive;
 
@@ -27,9 +35,6 @@ public class Task {
 
     private int position;
 
-    @Column(columnDefinition="TEXT")
-    private String description;
 
-    private int businessValue;
 
 }
