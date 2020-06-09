@@ -3,11 +3,11 @@ package com.codecool.scrumtracker.controller;
 import com.codecool.scrumtracker.model.AppUser;
 import com.codecool.scrumtracker.model.Project;
 import com.codecool.scrumtracker.model.ScrumTable;
-import com.codecool.scrumtracker.model.Task;
 import com.codecool.scrumtracker.model.credentials.StatusCredentials;
 import com.codecool.scrumtracker.model.credentials.ProjectCredentials;
 import com.codecool.scrumtracker.model.credentials.TaskCredentials;
 import com.codecool.scrumtracker.model.credentials.UserCredentials;
+import com.codecool.scrumtracker.service.EmailService;
 import com.codecool.scrumtracker.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +22,9 @@ public class ProjectController {
 
     @Autowired
     ProjectService projectService;
+
+    @Autowired
+    EmailService emailService;
 
     @PostMapping("/create")
     public Project createNewProject(@RequestBody ProjectCredentials project) {
@@ -95,4 +98,8 @@ public class ProjectController {
         return projectService.geArchiveProjects();
     };
 
+    @GetMapping("/email/{projectId}")
+    public void sendEmail(@PathVariable UUID projectId, @RequestBody String emailAddress) {
+        emailService.sendEmailToAddress(projectId, emailAddress);
+    }
 }
