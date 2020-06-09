@@ -68,9 +68,21 @@ public class EmailService /*implements EmailService*/ {
 
         StringBuilder msg = new StringBuilder();
         msg.append("<html><body>");
-
+        msg.append(buildHtmlHeader(project));
         msg.append(buildHtmlTable(tasks));
         msg.append("</body></html>");
+        return msg.toString();
+    }
+
+    private String buildHtmlHeader(Project project) {
+        StringBuilder msg = new StringBuilder();
+        msg.append("<h3>Project name: ").append(project.getTitle()).append("</h3>");
+        msg.append("<h4>Project members:</h4>");
+        msg.append("<ul>");
+        msg.append("<li>").append(project.getAuthor().getUsername()).append("</li>");
+        project.getParticipants().forEach(member ->
+                msg.append("<li>").append(member.getUsername()).append("</li>"));
+        msg.append("</ul>");
         return msg.toString();
     }
 
@@ -80,6 +92,7 @@ public class EmailService /*implements EmailService*/ {
         table.append("<table>");
 
         table.append(buildHtmlTableHeader());
+
         tasks.forEach(task -> {
             table.append(buildTaskRow(task));
         });
