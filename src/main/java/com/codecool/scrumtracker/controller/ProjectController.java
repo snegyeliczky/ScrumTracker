@@ -9,6 +9,7 @@ import com.codecool.scrumtracker.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import java.util.Set;
 import java.util.UUID;
 
@@ -96,7 +97,7 @@ public class ProjectController {
     };
 
     @PostMapping("/email/{projectId}")
-    public void sendEmail(@PathVariable UUID projectId, @RequestBody EmailCredentials emailAddress) {
+    public void sendEmail(@PathVariable UUID projectId, @RequestBody EmailCredentials emailAddress) throws MessagingException {
         emailService.sendEmailToAddress(projectId, emailAddress.getEmail());
     }
 }
