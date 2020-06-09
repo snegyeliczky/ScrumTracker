@@ -98,7 +98,7 @@ public class ProjectController {
         return projectService.geArchiveProjects();
     };
 
-    @GetMapping("/email/{projectId}")
+    @PostMapping("/email/{projectId}")
     public void sendEmail(@PathVariable UUID projectId, @RequestBody String emailAddress) {
         emailService.sendEmailToAddress(projectId, emailAddress);
     }
