@@ -3,10 +3,7 @@ package com.codecool.scrumtracker.controller;
 import com.codecool.scrumtracker.model.AppUser;
 import com.codecool.scrumtracker.model.Project;
 import com.codecool.scrumtracker.model.ScrumTable;
-import com.codecool.scrumtracker.model.credentials.StatusCredentials;
-import com.codecool.scrumtracker.model.credentials.ProjectCredentials;
-import com.codecool.scrumtracker.model.credentials.TaskCredentials;
-import com.codecool.scrumtracker.model.credentials.UserCredentials;
+import com.codecool.scrumtracker.model.credentials.*;
 import com.codecool.scrumtracker.service.EmailService;
 import com.codecool.scrumtracker.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,7 +96,7 @@ public class ProjectController {
     };
 
     @PostMapping("/email/{projectId}")
-    public void sendEmail(@PathVariable UUID projectId, @RequestBody String emailAddress) {
-        emailService.sendEmailToAddress(projectId, emailAddress);
+    public void sendEmail(@PathVariable UUID projectId, @RequestBody EmailCredentials emailAddress) {
+        emailService.sendEmailToAddress(projectId, emailAddress.getEmail());
     }
 }
