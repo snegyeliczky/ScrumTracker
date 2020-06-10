@@ -76,12 +76,22 @@ public class EmailService /*implements EmailService*/ {
 
     private String buildHtmlHeader(Project project) {
         StringBuilder msg = new StringBuilder();
-        msg.append("<h3>Project name: ").append(project.getTitle()).append("</h3>");
-        msg.append("<h4>Project members:</h4>");
+        msg.append("<h1>Project name: ").append(project.getTitle()).append("</h1>");
+        msg.append("<h3>Project members:</h3>");
         msg.append("<ul>");
-        msg.append("<li>").append(project.getAuthor().getUsername()).append("</li>");
+        msg.append("<li><a href = \"mailto:")
+                .append(project.getAuthor().getEmail())
+                .append("\">")
+                .append(project.getAuthor().getUsername())
+                .append("</a>")
+                .append("</li>");
         project.getParticipants().forEach(member ->
-                msg.append("<li>").append(member.getUsername()).append("</li>"));
+                msg.append("<li><a href = \"mailto:")
+                        .append(member.getEmail())
+                        .append("\">")
+                        .append(member.getUsername())
+                        .append("</a>")
+                        .append("</li>"));
         msg.append("</ul>");
         return msg.toString();
     }
@@ -108,6 +118,7 @@ public class EmailService /*implements EmailService*/ {
         header.append("<th>Story Title</th>");
         header.append("<th>User Story</th>");
         header.append("<th>Acceptance Criteria</th>");
+        header.append("<th>Business Value</th>");
         header.append("</tr>");
         return header.toString();
     }
@@ -118,6 +129,7 @@ public class EmailService /*implements EmailService*/ {
         row.append("<td>" + task.getStoryTitle() + "</td>");
         row.append("<td>" + task.getUserStory() + "</td>");
         row.append("<td>" + task.getAcceptanceCriteria() + "</td>");
+        row.append("<td>" + task.getBusinessValue() + "</td>");
         row.append("</tr>");
         return row.toString();
     }
