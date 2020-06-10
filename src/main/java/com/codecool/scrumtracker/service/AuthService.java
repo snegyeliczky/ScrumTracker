@@ -41,6 +41,7 @@ public class AuthService {
         AppUser appUser = AppUser.builder()
                 .username(newUser.getUsername())
                 .password(newUser.getPassword())
+                .email(newUser.getEmail())
                 .roles(Arrays.asList("ADMIN"))
                 .build();
         appUserRepository.saveAndFlush(appUser);
