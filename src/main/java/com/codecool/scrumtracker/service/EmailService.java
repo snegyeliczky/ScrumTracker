@@ -52,7 +52,7 @@ public class EmailService /*implements EmailService*/ {
 
         helper.setTo(emailAddress);
         helper.setText(htmlMsg, true);
-        helper.setSubject("what?");
+        helper.setSubject("Project sprint plan");
 
         emailSender.send(message);
 
