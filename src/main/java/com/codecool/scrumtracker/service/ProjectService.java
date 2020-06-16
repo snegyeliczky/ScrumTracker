@@ -111,7 +111,7 @@ public class ProjectService {
                 .orElse(0);
         Task builtTask = Task.builder()
                 .author(user)
-                .storyTitle(taskCredentials.getTitle())
+                .title(taskCredentials.getTitle())
                 .position(newPosition + 1)
                 .archive(false)
                 .build();

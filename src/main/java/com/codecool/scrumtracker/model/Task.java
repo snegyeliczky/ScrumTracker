@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -18,20 +19,21 @@ public class Task {
     @Id
     private UUID id;
 
-    private String storyTitle;
+    private String title;
 
     @Column(columnDefinition="TEXT")
-    private String acceptanceCriteria;
+    private String description;
 
-    @Column(columnDefinition="TEXT")
-    private String userStory;
-
-    private int businessValue;
+    private int priority;
 
     private boolean archive;
 
     @OneToOne
     private AppUser author;
+
+    private AppUser owner;
+
+    private LocalDateTime deadline;
 
     private int position;
 

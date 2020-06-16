@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -14,6 +15,7 @@ import java.util.UUID;
 public class TaskCredentials {
     private UUID statusId;
     private String description;
-    private int businessValue;
+    private int priority;
     private String title;
+    private LocalDateTime deadline;
 }
