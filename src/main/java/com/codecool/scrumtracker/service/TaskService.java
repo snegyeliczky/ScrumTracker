@@ -4,6 +4,7 @@ import com.codecool.scrumtracker.model.Status;
 import com.codecool.scrumtracker.model.Task;
 import com.codecool.scrumtracker.model.credentials.TaskCredentials;
 import com.codecool.scrumtracker.model.credentials.TaskTransferCredentials;
+import com.codecool.scrumtracker.repository.AppUserRepository;
 import com.codecool.scrumtracker.repository.StatusRepository;
 import com.codecool.scrumtracker.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class TaskService {
 
     @Autowired
     TaskRepository taskRepository;
+
+    @Autowired
+    AppUserRepository appUserRepository;
 
     public void changeTaskStatus(TaskTransferCredentials credentials) {
 
@@ -47,6 +51,9 @@ public class TaskService {
 
     public Task editTaskData(UUID taskId, Task taskCredentials) throws IllegalAccessException, NoSuchFieldException {
 
+        if (taskCredentials.getOwner() != null) {
+            taskCredentials.setOwner(appUserRepository.findById(taskCredentials.getOwner().getId()).get());
+        }
         Task taskToEdit = taskRepository.findById(taskId).get();
         for (Field f : taskCredentials.getClass().getDeclaredFields()) {
             f.setAccessible(true);

@@ -1,5 +1,6 @@
 package com.codecool.scrumtracker.model.credentials;
 
+import com.codecool.scrumtracker.model.AppUser;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,4 +19,5 @@ public class TaskCredentials {
     private int priority;
     private String title;
     private LocalDateTime deadline;
+    private AppUser owner;
 }
