@@ -31,6 +31,7 @@ public class Task {
     @OneToOne
     private AppUser author;
 
+    @OneToOne
     private AppUser owner;
 
     private LocalDateTime deadline;
