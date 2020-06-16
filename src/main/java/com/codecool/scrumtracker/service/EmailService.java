@@ -126,10 +126,10 @@ public class EmailService /*implements EmailService*/ {
     private String buildTaskRow(Task task) {
         StringBuilder row = new StringBuilder();
         row.append("<tr>");
-        row.append("<td>" + task.getStoryTitle() + "</td>");
-        row.append("<td>" + task.getUserStory() + "</td>");
-        row.append("<td>" + task.getAcceptanceCriteria() + "</td>");
-        row.append("<td>" + task.getBusinessValue() + "</td>");
+        row.append("<td>" + task.getTitle() + "</td>");
+        row.append("<td>" + task.getDescription() + "</td>");
+        row.append("<td>" + task.getDeadline() + "</td>");
+        row.append("<td>" + task.getPriority() + "</td>");
         row.append("</tr>");
         return row.toString();
     }
