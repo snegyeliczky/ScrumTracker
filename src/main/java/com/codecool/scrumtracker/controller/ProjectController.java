@@ -1,5 +1,6 @@
 package com.codecool.scrumtracker.controller;
 
+import com.codecool.scrumtracker.exception.exceptions.NotAuthoritizedException;
 import com.codecool.scrumtracker.model.AppUser;
 import com.codecool.scrumtracker.model.Project;
 import com.codecool.scrumtracker.model.ScrumTable;
@@ -7,7 +8,10 @@ import com.codecool.scrumtracker.model.credentials.*;
 import com.codecool.scrumtracker.service.EmailService;
 import com.codecool.scrumtracker.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.mail.MessagingException;
 import java.util.Set;
@@ -31,8 +35,10 @@ public class ProjectController {
 
 
     @GetMapping("/{id}")
-    public Project getProjectById(@PathVariable UUID id) {
+    public Project getProjectById(@PathVariable UUID id) throws NotAuthoritizedException {
+
         return projectService.getProjectById(id);
+
     }
 
     @PostMapping("/newstatus")
@@ -46,14 +52,14 @@ public class ProjectController {
     }
 
     @DeleteMapping("/deletestatus")
-    public void deleteStatusFromProject(@RequestParam(value = "statusid")UUID statusId,
-                                        @RequestParam(value = "tableid")UUID tableId){
-        projectService.deleteStatusFromProject(statusId,tableId);
+    public void deleteStatusFromProject(@RequestParam(value = "statusid") UUID statusId,
+                                        @RequestParam(value = "tableid") UUID tableId) {
+        projectService.deleteStatusFromProject(statusId, tableId);
     }
 
     @GetMapping("/gettable/{id}")
-    public ScrumTable getScrumTableById(@PathVariable UUID id){
-       return projectService.getScrumTableById(id);
+    public ScrumTable getScrumTableById(@PathVariable UUID id) {
+        return projectService.getScrumTableById(id);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -62,7 +68,7 @@ public class ProjectController {
     }
 
     @PutMapping("/archive/{id}")
-    public void archiveProjectById(@PathVariable UUID id){
+    public void archiveProjectById(@PathVariable UUID id) {
         projectService.archiveProjectById(id);
     }
 
@@ -77,24 +83,30 @@ public class ProjectController {
     }
 
     @GetMapping("/getmyprojectswitharchive")
-    public Set<Project> getMyProjectsWithArchive(){
+    public Set<Project> getMyProjectsWithArchive() {
         return projectService.getMyProjects();
-    };
+    }
+
+    ;
 
     @GetMapping("/getactiveprojects")
-    public Set<Project> getActiveProject(){
+    public Set<Project> getActiveProject() {
         return projectService.getMyActiveProjects();
-    };
+    }
+
+    ;
 
     @GetMapping("/getparticipateprojects")
-    public Set<Project> getParticipateProjects(){
+    public Set<Project> getParticipateProjects() {
         return projectService.getParticipateProjects();
     }
 
     @GetMapping("/getarchiveprojects")
-    public Set<Project> getArchiveProjects(){
+    public Set<Project> getArchiveProjects() {
         return projectService.geArchiveProjects();
-    };
+    }
+
+    ;
 
     @PostMapping("/email/{projectId}")
     public void sendEmail(@PathVariable UUID projectId, @RequestBody EmailCredentials emailAddress) throws MessagingException {

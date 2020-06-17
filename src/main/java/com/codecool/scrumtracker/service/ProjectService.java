@@ -1,5 +1,6 @@
 package com.codecool.scrumtracker.service;
 
+import com.codecool.scrumtracker.exception.exceptions.NotAuthoritizedException;
 import com.codecool.scrumtracker.model.*;
 import com.codecool.scrumtracker.model.credentials.ProjectCredentials;
 import com.codecool.scrumtracker.model.credentials.StatusCredentials;
@@ -9,6 +10,7 @@ import com.codecool.scrumtracker.repository.*;
 import com.codecool.scrumtracker.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 
 import java.util.*;
 
@@ -75,8 +77,12 @@ public class ProjectService {
     }
 
 
-    public Project getProjectById(UUID id) {
-        return projectRepository.findById(id).get();
+    public Project getProjectById(UUID id) throws NotAuthoritizedException {
+        Project project = projectRepository.findById(id).get();
+        if (!util.projectAuthorization(project)) {
+            throw new NotAuthoritizedException("fasz", new Throwable());
+        }
+        return project;
     }
 
     public ScrumTable addNewStatusToProject(StatusCredentials status) {
