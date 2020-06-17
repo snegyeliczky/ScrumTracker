@@ -61,6 +61,7 @@ public class TaskService {
                 f.set(taskToEdit, f.get(taskCredentials));
             }
         }
+
         taskRepository.save(taskToEdit);
         return taskToEdit;
 

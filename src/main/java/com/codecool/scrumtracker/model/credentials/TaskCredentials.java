@@ -20,4 +20,5 @@ public class TaskCredentials {
     private String title;
     private LocalDateTime deadline;
     private AppUser owner;
+    private int position;
 }

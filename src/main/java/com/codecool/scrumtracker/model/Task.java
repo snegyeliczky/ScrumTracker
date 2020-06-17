@@ -36,7 +36,7 @@ public class Task {
 
     private LocalDateTime deadline;
 
-    private int position;
+    private Integer position;
 
 
 
