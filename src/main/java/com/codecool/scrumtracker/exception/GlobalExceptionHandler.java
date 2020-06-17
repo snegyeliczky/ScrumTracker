@@ -1,6 +1,7 @@
 package com.codecool.scrumtracker.exception;
 
 import com.codecool.scrumtracker.exception.exceptions.NotAuthoritizedException;
+import com.codecool.scrumtracker.exception.exceptions.NotProjectOwnerException;
 import com.codecool.scrumtracker.model.ApiError;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -21,14 +22,26 @@ public class GlobalExceptionHandler {
         HttpHeaders headers = new HttpHeaders();
 
         if (ex instanceof NotAuthoritizedException) {
+
             HttpStatus status = HttpStatus.NOT_FOUND;
             NotAuthoritizedException unfe = (NotAuthoritizedException) ex;
 
             return handleNotAuthoritizedException(unfe, headers, status, request);
+        } else if (ex instanceof NotProjectOwnerException) {
+
+            HttpStatus status = HttpStatus.NOT_FOUND;
+            NotProjectOwnerException unfe = (NotProjectOwnerException) ex;
+
+            return handleNotProjectOwnerException(unfe, headers, status, request);
         }
         HttpStatus status = HttpStatus.NOT_FOUND;
         NotAuthoritizedException unfe = (NotAuthoritizedException) ex;
         return handleNotAuthoritizedException(unfe, headers, status, request);
+    }
+
+    private ResponseEntity<ApiError> handleNotProjectOwnerException(NotProjectOwnerException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        List<String> errors = Collections.singletonList(ex.getMessage());
+        return handleExceptionInternal(ex, new ApiError(errors), headers, status, request);
     }
 
     protected ResponseEntity<ApiError> handleNotAuthoritizedException(NotAuthoritizedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {

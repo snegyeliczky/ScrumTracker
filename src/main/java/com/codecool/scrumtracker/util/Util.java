@@ -31,4 +31,9 @@ public class Util {
         });
         return false;
     }
+
+    public boolean checkUserIsProjectOwner(Project project) {
+        AppUser currentUser = getUserFromContext();
+        return currentUser.getId() == project.getAuthor().getId();
+    }
 }

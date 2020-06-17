@@ -1,6 +1,7 @@
 package com.codecool.scrumtracker.controller;
 
 import com.codecool.scrumtracker.exception.exceptions.NotAuthoritizedException;
+import com.codecool.scrumtracker.exception.exceptions.NotProjectOwnerException;
 import com.codecool.scrumtracker.model.AppUser;
 import com.codecool.scrumtracker.model.Project;
 import com.codecool.scrumtracker.model.ScrumTable;
@@ -58,12 +59,12 @@ public class ProjectController {
     }
 
     @GetMapping("/gettable/{id}")
-    public ScrumTable getScrumTableById(@PathVariable UUID id) {
+    public ScrumTable getScrumTableById(@PathVariable UUID id) throws NotAuthoritizedException {
         return projectService.getScrumTableById(id);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteProjectById(@PathVariable UUID id) {
+    public void deleteProjectById(@PathVariable UUID id) throws NotProjectOwnerException {
         projectService.deleteProjectById(id);
     }
 

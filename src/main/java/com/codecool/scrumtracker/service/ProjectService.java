@@ -1,6 +1,7 @@
 package com.codecool.scrumtracker.service;
 
 import com.codecool.scrumtracker.exception.exceptions.NotAuthoritizedException;
+import com.codecool.scrumtracker.exception.exceptions.NotProjectOwnerException;
 import com.codecool.scrumtracker.model.*;
 import com.codecool.scrumtracker.model.credentials.ProjectCredentials;
 import com.codecool.scrumtracker.model.credentials.StatusCredentials;
@@ -80,7 +81,7 @@ public class ProjectService {
     public Project getProjectById(UUID id) throws NotAuthoritizedException {
         Project project = projectRepository.findById(id).get();
         if (!util.projectAuthorization(project)) {
-            throw new NotAuthoritizedException("fasz", new Throwable());
+            throw new NotAuthoritizedException("You don't have permission", new Throwable());
         }
         return project;
     }
@@ -152,16 +153,24 @@ public class ProjectService {
         deleteTasksFromDatabase(status.getTasks());
     }
 
-    public ScrumTable getScrumTableById(UUID id) {
-        return scrumTableRepository.findById(id).get();
+    public ScrumTable getScrumTableById(UUID id) throws NotAuthoritizedException {
+        ScrumTable table = scrumTableRepository.findById(id).get();
+        Project project = projectRepository.getProjectByTable(table).get();
+        if (!util.projectAuthorization(project)) {
+            throw new NotAuthoritizedException("You don't have permission", new Throwable());
+        }
+        return table;
     }
 
     private void deleteTasksFromDatabase(Set<Task> tasks) {
         tasks.forEach(task -> taskRepository.deleteById(task.getId()));
     }
 
-    public void deleteProjectById(UUID id) {
-
+    public void deleteProjectById(UUID id) throws NotProjectOwnerException {
+        Project project = projectRepository.findById(id).get();
+        if (!util.checkUserIsProjectOwner(project)) {
+            throw new NotProjectOwnerException("You are not the project owner", new Throwable());
+        }
         projectRepository.deleteById(id);
     }
 
