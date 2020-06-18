@@ -121,6 +121,7 @@ public class ProjectService {
                 .title(taskCredentials.getTitle())
                 .position(newPosition + 1)
                 .archive(false)
+                .priority(0)
                 .build();
         Set<Task> taskSet = status.getTasks();
         taskSet.add(builtTask);
