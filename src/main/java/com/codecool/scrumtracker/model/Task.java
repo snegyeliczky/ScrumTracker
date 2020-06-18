@@ -24,7 +24,7 @@ public class Task {
     @Column(columnDefinition="TEXT")
     private String description;
 
-    private int priority;
+    private Integer priority;
 
     private boolean archive;
 
