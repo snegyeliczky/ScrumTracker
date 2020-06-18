@@ -23,4 +23,6 @@ public class ScrumTable {
 
     @OneToMany(cascade= CascadeType.ALL)
     private Set<Status> statuses;
+
+    private Integer taskLimit;
 }

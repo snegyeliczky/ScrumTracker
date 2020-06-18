@@ -93,7 +93,6 @@ public class ProjectController {
     }
 
 
-
     @GetMapping("/getparticipateprojects")
     public Set<Project> getParticipateProjects() {
         return projectService.getParticipateProjects();
@@ -109,5 +108,10 @@ public class ProjectController {
     @PostMapping("/email/{projectId}")
     public void sendEmail(@PathVariable UUID projectId, @RequestBody EmailCredentials emailAddress) throws MessagingException {
         emailService.sendEmailToAddress(projectId, emailAddress.getEmail());
+    }
+
+    @PutMapping("/table/limit")
+    public void updateInProgressLimitValue(@RequestBody ScrumTableCredentials credentials) {
+        projectService.updateInProgressLimitValue(credentials);
     }
 }

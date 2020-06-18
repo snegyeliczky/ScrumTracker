@@ -3,10 +3,7 @@ package com.codecool.scrumtracker.service;
 import com.codecool.scrumtracker.exception.exceptions.NotAuthoritizedException;
 import com.codecool.scrumtracker.exception.exceptions.NotProjectOwnerException;
 import com.codecool.scrumtracker.model.*;
-import com.codecool.scrumtracker.model.credentials.ProjectCredentials;
-import com.codecool.scrumtracker.model.credentials.StatusCredentials;
-import com.codecool.scrumtracker.model.credentials.TaskCredentials;
-import com.codecool.scrumtracker.model.credentials.UserCredentials;
+import com.codecool.scrumtracker.model.credentials.*;
 import com.codecool.scrumtracker.repository.*;
 import com.codecool.scrumtracker.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +44,7 @@ public class ProjectService {
     private ScrumTable createScrumTable(Set<Status> initialStatuses) {
         ScrumTable table = ScrumTable.builder()
                 .statuses(initialStatuses)
+                .taskLimit(0)
                 .build();
         return table;
     }
@@ -226,5 +224,11 @@ public class ProjectService {
         Set<Project> participants = projectRepository.getProjectByParticipantsContainsAndArchiveIsTrue(user);
         participants.forEach(project -> projects.add(project));
         return projects;
+    }
+
+    public void updateInProgressLimitValue(ScrumTableCredentials credentials) {
+        ScrumTable table = scrumTableRepository.findById(credentials.getId()).get();
+        table.setTaskLimit(credentials.getTaskLimit());
+        scrumTableRepository.save(table);
     }
 }
