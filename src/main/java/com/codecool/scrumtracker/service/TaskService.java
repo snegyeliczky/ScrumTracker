@@ -1,18 +1,22 @@
 package com.codecool.scrumtracker.service;
 
+import com.codecool.scrumtracker.model.ScrumTable;
 import com.codecool.scrumtracker.model.Status;
 import com.codecool.scrumtracker.model.Task;
 import com.codecool.scrumtracker.model.credentials.TaskCredentials;
 import com.codecool.scrumtracker.model.credentials.TaskTransferCredentials;
 import com.codecool.scrumtracker.repository.AppUserRepository;
+import com.codecool.scrumtracker.repository.ScrumTableRepository;
 import com.codecool.scrumtracker.repository.StatusRepository;
 import com.codecool.scrumtracker.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
+import java.util.Comparator;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 public class TaskService {
@@ -26,16 +30,55 @@ public class TaskService {
     @Autowired
     AppUserRepository appUserRepository;
 
-    public void changeTaskStatus(TaskTransferCredentials credentials) {
+    @Autowired
+    ScrumTableRepository scrumTableRepository;
+
+    public void changeTaskStatus(TaskTransferCredentials credentials) throws Exception {
+
 
         Status fromStatus = statusRepository.findById(credentials.getFromStatusId()).get();
         Status toStatus = statusRepository.findById(credentials.getToStatusId()).get();
-        Task task = taskRepository.findById(credentials.getTaskId()).get();
-        fromStatus.getTasks().remove(task);
-        toStatus.getTasks().add(task);
-        statusRepository.save(fromStatus);
-        statusRepository.save(toStatus);
+        ScrumTable table = scrumTableRepository.findByStatusesContaining(fromStatus).get();
+        if (checkScrumTableLimit(table, toStatus.getPosition())) {
+            Task task = taskRepository.findById(credentials.getTaskId()).get();
+            fromStatus.getTasks().remove(task);
+            toStatus.getTasks().add(task);
+            statusRepository.save(fromStatus);
+            statusRepository.save(toStatus);
+        } else {
+            throw new Exception("no waaaaaaaaaaaay");
+        }
 
+    }
+
+    private boolean checkScrumTableLimit(ScrumTable table, Integer statusPosition) {
+        Comparator<Status> comparator = Comparator.comparing( Status::getPosition );
+        Status max = table.getStatuses().stream().max(comparator).get();
+        if (statusPosition == 1 || statusPosition == max.getPosition()) {
+            return true;
+        } else {
+
+            Set<Status> inProgressStatuses = getInProgressStatuses(table, max.getPosition());
+            Integer limit = table.getTaskLimit();
+            Integer taskcount = getTaskCount(inProgressStatuses);
+            boolean a = table.getTaskLimit() > getTaskCount(inProgressStatuses);
+            return table.getTaskLimit() > getTaskCount(inProgressStatuses);
+            // fix task count method//
+            //TODO //
+        }
+    }
+
+    private Integer getTaskCount(Set<Status> statuses) {
+        return Math.toIntExact(statuses.stream()
+                .map(Status::getTasks)
+                .count());
+    }
+
+    private Set<Status> getInProgressStatuses(ScrumTable table, Integer maxPosition) {
+        Set<Status> statuses = table.getStatuses();
+        return statuses.stream()
+                .filter(status -> status.getPosition() > 1 && status.getPosition() != maxPosition)
+                .collect(Collectors.toSet());
     }
 
     public void deleteTaskById(UUID id) {

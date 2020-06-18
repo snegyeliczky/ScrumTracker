@@ -18,7 +18,7 @@ public class TaskController {
     TaskService taskService;
 
     @PutMapping("/transfer")
-    public void changeTaskStatus(@RequestBody TaskTransferCredentials credentials) {
+    public void changeTaskStatus(@RequestBody TaskTransferCredentials credentials) throws Exception {
         taskService.changeTaskStatus(credentials);
     }
 
