@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.lang.Nullable;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
