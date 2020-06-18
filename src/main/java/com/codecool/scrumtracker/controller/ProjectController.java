@@ -9,10 +9,7 @@ import com.codecool.scrumtracker.model.credentials.*;
 import com.codecool.scrumtracker.service.EmailService;
 import com.codecool.scrumtracker.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.mail.MessagingException;
 import java.util.Set;
@@ -88,14 +85,14 @@ public class ProjectController {
         return projectService.getMyProjects();
     }
 
-    ;
+
 
     @GetMapping("/getactiveprojects")
     public Set<Project> getActiveProject() {
         return projectService.getMyActiveProjects();
     }
 
-    ;
+
 
     @GetMapping("/getparticipateprojects")
     public Set<Project> getParticipateProjects() {
@@ -107,7 +104,7 @@ public class ProjectController {
         return projectService.geArchiveProjects();
     }
 
-    ;
+
 
     @PostMapping("/email/{projectId}")
     public void sendEmail(@PathVariable UUID projectId, @RequestBody EmailCredentials emailAddress) throws MessagingException {
