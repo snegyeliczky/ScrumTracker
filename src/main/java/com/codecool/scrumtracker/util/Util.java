@@ -26,9 +26,9 @@ public class Util {
         if (currentUser.getId() == project.getAuthor().getId()) {
             return true;
         }
-        project.getParticipants().stream().map(user -> {
-            return user.getId() == currentUser.getId();
-        });
+        for (AppUser user : project.getParticipants()) {
+            if (user.getId() == currentUser.getId()) return true;
+        }
         return false;
     }
 
