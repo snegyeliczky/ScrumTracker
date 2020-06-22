@@ -6,11 +6,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.data.annotation.CreatedBy;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @AllArgsConstructor
@@ -31,6 +30,19 @@ public class AppUser {
 
     @JsonIgnore
     private String password;
+
+    @Column
+    private Integer projects;
+
+    @Column
+    private Integer participant;
+
+    @Column(columnDefinition = "integer default 0")
+    private Integer tasks;
+
+    @Column
+    private Integer finishedTask;
+
 
     @ElementCollection
     @Builder.Default

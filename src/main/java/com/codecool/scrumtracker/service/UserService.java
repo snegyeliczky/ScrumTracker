@@ -18,4 +18,8 @@ public class UserService {
 
         return appUserRepository.findByUsernameContaining(keyWord.getUsername());
     }
+
+    public AppUser getUserByName(String username) {
+        return appUserRepository.findByUsername(username).get();
+    }
 }
