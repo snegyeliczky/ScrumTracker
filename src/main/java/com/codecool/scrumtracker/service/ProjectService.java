@@ -33,6 +33,9 @@ public class ProjectService {
     @Autowired
     AppUserRepository appUserRepository;
 
+    @Autowired
+    UserService userService;
+
     private Set<Status> createBaseStatus() {
         Status toDo = createStatus("To Do", 1);
         Status inProgress = createStatus("In Progress", 2);
@@ -63,6 +66,7 @@ public class ProjectService {
                 .archive(false)
                 .build();
 
+        userService.newProject(user);
         statusRepository.saveAll(initialStates);
         scrumTableRepository.save(table);
         return projectRepository.save(newProject);

@@ -21,4 +21,9 @@ public class UserController {
 
         return userService.searchUser(keyWord);
     }
+
+    @GetMapping("/{username}")
+    public AppUser getUser(@PathVariable String username){
+        return userService.getUserByName(username);
+    }
 }
