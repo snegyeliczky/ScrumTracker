@@ -59,6 +59,8 @@ public class TaskService {
         Status max = table.getStatuses().stream().max(comparator).get();
         if (statusPosition == 1 || statusPosition == max.getPosition()) {
             return true;
+        } else if (table.getTaskLimit() == 0) {
+            return true;
         } else {
 
             Set<Status> inProgressStatuses = getInProgressStatuses(table, max.getPosition());
