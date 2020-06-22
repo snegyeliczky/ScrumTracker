@@ -31,16 +31,16 @@ public class AppUser {
     @JsonIgnore
     private String password;
 
-    @Column
-    private Integer projects;
+    @Column()
+    private Integer projectsCount;
 
-    @Column
+    @Column(columnDefinition = "integer default 0")
     private Integer participant;
 
     @Column(columnDefinition = "integer default 0")
     private Integer tasks;
 
-    @Column
+    @Column(columnDefinition = "integer default 0")
     private Integer finishedTask;
 
 

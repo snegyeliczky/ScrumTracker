@@ -14,6 +14,11 @@ public class UserService {
     @Autowired
     AppUserRepository appUserRepository;
 
+    public void newProject(AppUser user) {
+        user.setProjectsCount(user.getProjectsCount()+1);
+        appUserRepository.save(user);
+    }
+
     public Set<AppUser> searchUser(UserCredentials keyWord) {
 
         return appUserRepository.findByUsernameContaining(keyWord.getUsername());

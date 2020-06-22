@@ -43,6 +43,7 @@ public class AuthService {
                 .password(newUser.getPassword())
                 .email(newUser.getEmail())
                 .roles(Arrays.asList("ADMIN"))
+                .projectsCount(0)
                 .build();
         appUserRepository.saveAndFlush(appUser);
     }

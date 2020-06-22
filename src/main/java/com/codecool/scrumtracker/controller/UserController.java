@@ -22,7 +22,7 @@ public class UserController {
         return userService.searchUser(keyWord);
     }
 
-    @PostMapping("/{username}")
+    @GetMapping("/{username}")
     public AppUser getUser(@PathVariable String username){
         return userService.getUserByName(username);
     }
