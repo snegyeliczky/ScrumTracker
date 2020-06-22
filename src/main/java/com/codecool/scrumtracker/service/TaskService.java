@@ -1,9 +1,9 @@
 package com.codecool.scrumtracker.service;
 
+import com.codecool.scrumtracker.exception.exceptions.ReachMaximumNumberOfTasksException;
 import com.codecool.scrumtracker.model.ScrumTable;
 import com.codecool.scrumtracker.model.Status;
 import com.codecool.scrumtracker.model.Task;
-import com.codecool.scrumtracker.model.credentials.TaskCredentials;
 import com.codecool.scrumtracker.model.credentials.TaskTransferCredentials;
 import com.codecool.scrumtracker.repository.AppUserRepository;
 import com.codecool.scrumtracker.repository.ScrumTableRepository;
@@ -14,8 +14,11 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
@@ -46,7 +49,7 @@ public class TaskService {
             statusRepository.save(fromStatus);
             statusRepository.save(toStatus);
         } else {
-            throw new Exception("no waaaaaaaaaaaay");
+            throw new ReachMaximumNumberOfTasksException("You reach the maximum number of tasks.", new Throwable());
         }
 
     }
@@ -59,19 +62,17 @@ public class TaskService {
         } else {
 
             Set<Status> inProgressStatuses = getInProgressStatuses(table, max.getPosition());
-            Integer limit = table.getTaskLimit();
-            Integer taskcount = getTaskCount(inProgressStatuses);
-            boolean a = table.getTaskLimit() > getTaskCount(inProgressStatuses);
             return table.getTaskLimit() > getTaskCount(inProgressStatuses);
-            // fix task count method//
-            //TODO //
         }
     }
 
     private Integer getTaskCount(Set<Status> statuses) {
-        return Math.toIntExact(statuses.stream()
-                .map(Status::getTasks)
-                .count());
+        Set<Task> tasks = new HashSet<>();
+        for (Status status : statuses) {
+            Set<Task> statusTasks = status.getTasks();
+            tasks.addAll(statusTasks);
+        }
+        return tasks.size();
     }
 
     private Set<Status> getInProgressStatuses(ScrumTable table, Integer maxPosition) {
