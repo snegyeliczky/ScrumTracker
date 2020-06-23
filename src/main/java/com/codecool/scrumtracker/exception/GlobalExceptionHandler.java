@@ -27,36 +27,26 @@ public class GlobalExceptionHandler {
             HttpStatus status = HttpStatus.NOT_FOUND;
             NotAuthoritizedException unfe = (NotAuthoritizedException) ex;
 
-            return handleNotAuthoritizedException(unfe, headers, status, request);
+            return handleExcpetion(unfe, headers, status, request);
         } else if (ex instanceof NotProjectOwnerException) {
 
             HttpStatus status = HttpStatus.NOT_FOUND;
             NotProjectOwnerException unfe = (NotProjectOwnerException) ex;
 
-            return handleNotProjectOwnerException(unfe, headers, status, request);
+            return handleExcpetion(unfe, headers, status, request);
         } else if (ex instanceof ReachMaximumNumberOfTasksException) {
 
             HttpStatus status = HttpStatus.NOT_FOUND;
             ReachMaximumNumberOfTasksException unfe = (ReachMaximumNumberOfTasksException) ex;
 
-            return handleReachMaximumNumberOfTasksException(unfe, headers, status, request);
+            return handleExcpetion(unfe, headers, status, request);
         }
         HttpStatus status = HttpStatus.NOT_FOUND;
         NotAuthoritizedException unfe = (NotAuthoritizedException) ex;
-        return handleNotAuthoritizedException(unfe, headers, status, request);
+        return handleExcpetion(unfe, headers, status, request);
     }
 
-    private ResponseEntity<ApiError> handleNotProjectOwnerException(NotProjectOwnerException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        List<String> errors = Collections.singletonList(ex.getMessage());
-        return handleExceptionInternal(ex, new ApiError(errors), headers, status, request);
-    }
-
-    protected ResponseEntity<ApiError> handleNotAuthoritizedException(NotAuthoritizedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        List<String> errors = Collections.singletonList(ex.getMessage());
-        return handleExceptionInternal(ex, new ApiError(errors), headers, status, request);
-    }
-
-    protected ResponseEntity<ApiError> handleReachMaximumNumberOfTasksException(ReachMaximumNumberOfTasksException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    private ResponseEntity<ApiError> handleExcpetion(Exception ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         List<String> errors = Collections.singletonList(ex.getMessage());
         return handleExceptionInternal(ex, new ApiError(errors), headers, status, request);
     }

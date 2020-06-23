@@ -38,7 +38,6 @@ public class TaskService {
 
     public void changeTaskStatus(TaskTransferCredentials credentials) throws Exception {
 
-
         Status fromStatus = statusRepository.findById(credentials.getFromStatusId()).get();
         Status toStatus = statusRepository.findById(credentials.getToStatusId()).get();
         ScrumTable table = scrumTableRepository.findByStatusesContaining(fromStatus).get();
@@ -69,12 +68,8 @@ public class TaskService {
     }
 
     private Integer getTaskCount(Set<Status> statuses) {
-        Set<Task> tasks = new HashSet<>();
-        for (Status status : statuses) {
-            Set<Task> statusTasks = status.getTasks();
-            tasks.addAll(statusTasks);
-        }
-        return tasks.size();
+        return statuses.stream().mapToInt(value -> value.getTasks().size()).sum();
+
     }
 
     private Set<Status> getInProgressStatuses(ScrumTable table, Integer maxPosition) {
