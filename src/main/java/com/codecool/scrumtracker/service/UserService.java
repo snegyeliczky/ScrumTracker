@@ -27,4 +27,9 @@ public class UserService {
     public AppUser getUserByName(String username) {
         return appUserRepository.findByUsername(username).get();
     }
+
+    public void incrementParticipantCount(AppUser user) {
+        user.setParticipantCount(user.getParticipantCount()+1);
+        appUserRepository.save(user);
+    }
 }

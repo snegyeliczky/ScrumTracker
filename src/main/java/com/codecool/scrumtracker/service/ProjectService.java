@@ -182,6 +182,7 @@ public class ProjectService {
         Project project = projectRepository.findById(projectId).get();
         AppUser user = appUserRepository.findByUsername(userToAdd.getUsername()).get();
         Set<AppUser> participants = project.getParticipants();
+        userService.incrementParticipantCount(user);
         participants.add(user);
         project.setParticipants(participants);
         projectRepository.save(project);

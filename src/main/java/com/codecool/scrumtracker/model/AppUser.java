@@ -35,13 +35,13 @@ public class AppUser {
     private Integer projectsCount;
 
     @Column(columnDefinition = "integer default 0")
-    private Integer participant;
+    private Integer participantCount;
 
     @Column(columnDefinition = "integer default 0")
-    private Integer tasks;
+    private Integer tasksCount;
 
     @Column(columnDefinition = "integer default 0")
-    private Integer finishedTask;
+    private Integer finishedTaskCount;
 
 
     @ElementCollection
