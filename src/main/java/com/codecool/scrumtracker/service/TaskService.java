@@ -28,6 +28,9 @@ public class TaskService {
     StatusRepository statusRepository;
 
     @Autowired
+    UserService userService;
+
+    @Autowired
     TaskRepository taskRepository;
 
     @Autowired
@@ -98,7 +101,9 @@ public class TaskService {
     public Task editTaskData(UUID taskId, Task taskCredentials) throws IllegalAccessException, NoSuchFieldException {
 
         if (taskCredentials.getOwner() != null) {
-            taskCredentials.setOwner(appUserRepository.findById(taskCredentials.getOwner().getId()).get());
+            AppUser appUser = appUserRepository.findById(taskCredentials.getOwner().getId()).get();
+            userService.incrementTaskCount(appUser);
+            taskCredentials.setOwner(appUser);
         }
         Task taskToEdit = taskRepository.findById(taskId).get();
         for (Field f : taskCredentials.getClass().getDeclaredFields()) {

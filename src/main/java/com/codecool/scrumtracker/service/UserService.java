@@ -32,4 +32,9 @@ public class UserService {
         user.setParticipantCount(user.getParticipantCount()+1);
         appUserRepository.save(user);
     }
+
+    public void incrementTaskCount(AppUser appUser) {
+        appUser.setTasksCount(appUser.getTasksCount()+1);
+        appUserRepository.save(appUser);
+    }
 }
