@@ -1,6 +1,7 @@
 package com.codecool.scrumtracker.service;
 
 import com.codecool.scrumtracker.exception.exceptions.ReachMaximumNumberOfTasksException;
+import com.codecool.scrumtracker.model.AppUser;
 import com.codecool.scrumtracker.model.ScrumTable;
 import com.codecool.scrumtracker.model.Status;
 import com.codecool.scrumtracker.model.Task;
@@ -118,9 +119,10 @@ public class TaskService {
 
     }
 
-    public void archiveById(UUID id) {
-        Task task = taskRepository.findById(id).get();
-        task.setArchive(!task.isArchive());
+
+    public void setFinishTask(UUID taskId) {
+        Task task = taskRepository.findById(taskId).get();
+        task.setFinished(!task.isFinished());
         taskRepository.save(task);
     }
 }

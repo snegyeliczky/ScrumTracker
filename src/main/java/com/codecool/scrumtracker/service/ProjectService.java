@@ -122,7 +122,7 @@ public class ProjectService {
                 .author(user)
                 .title(taskCredentials.getTitle())
                 .position(newPosition + 1)
-                .archive(false)
+                .finished(false)
                 .priority(0)
                 .build();
         Set<Task> taskSet = status.getTasks();
