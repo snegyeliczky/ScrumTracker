@@ -1,6 +1,6 @@
 package com.codecool.scrumtracker.controller;
 
-import com.codecool.scrumtracker.exception.exceptions.NotAuthoritizedException;
+import com.codecool.scrumtracker.exception.exceptions.NotAuthorizedException;
 import com.codecool.scrumtracker.exception.exceptions.NotProjectOwnerException;
 import com.codecool.scrumtracker.model.AppUser;
 import com.codecool.scrumtracker.model.Project;
@@ -33,7 +33,7 @@ public class ProjectController {
 
 
     @GetMapping("/{id}")
-    public Project getProjectById(@PathVariable UUID id) throws NotAuthoritizedException {
+    public Project getProjectById(@PathVariable UUID id) throws NotAuthorizedException {
 
         return projectService.getProjectById(id);
 
@@ -56,7 +56,7 @@ public class ProjectController {
     }
 
     @GetMapping("/gettable/{id}")
-    public ScrumTable getScrumTableById(@PathVariable UUID id) throws NotAuthoritizedException {
+    public ScrumTable getScrumTableById(@PathVariable UUID id) throws NotAuthorizedException {
         return projectService.getScrumTableById(id);
     }
 

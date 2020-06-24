@@ -1,6 +1,6 @@
 package com.codecool.scrumtracker.service;
 
-import com.codecool.scrumtracker.exception.exceptions.NotAuthoritizedException;
+import com.codecool.scrumtracker.exception.exceptions.NotAuthorizedException;
 import com.codecool.scrumtracker.exception.exceptions.NotProjectOwnerException;
 import com.codecool.scrumtracker.model.*;
 import com.codecool.scrumtracker.model.credentials.*;
@@ -8,7 +8,6 @@ import com.codecool.scrumtracker.repository.*;
 import com.codecool.scrumtracker.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
 
 import java.util.*;
 
@@ -80,10 +79,10 @@ public class ProjectService {
     }
 
 
-    public Project getProjectById(UUID id) throws NotAuthoritizedException {
+    public Project getProjectById(UUID id) throws NotAuthorizedException {
         Project project = projectRepository.findById(id).get();
         if (!util.projectAuthorization(project)) {
-            throw new NotAuthoritizedException("You don't have permission", new Throwable());
+            throw new NotAuthorizedException("You don't have permission", new Throwable());
         }
         return project;
     }
@@ -156,11 +155,11 @@ public class ProjectService {
         deleteTasksFromDatabase(status.getTasks());
     }
 
-    public ScrumTable getScrumTableById(UUID id) throws NotAuthoritizedException {
+    public ScrumTable getScrumTableById(UUID id) throws NotAuthorizedException {
         ScrumTable table = scrumTableRepository.findById(id).get();
         Project project = projectRepository.getProjectByTable(table).get();
         if (!util.projectAuthorization(project)) {
-            throw new NotAuthoritizedException("You don't have permission", new Throwable());
+            throw new NotAuthorizedException("You don't have permission", new Throwable());
         }
         return table;
     }

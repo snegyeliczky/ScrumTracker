@@ -5,8 +5,8 @@ import lombok.Data;
 
 @AllArgsConstructor
 @Data
-public class NotAuthoritizedException extends Exception {
-    public NotAuthoritizedException(String errorMessage, Throwable err) {
+public class NotAuthorizedException extends Exception {
+    public NotAuthorizedException(String errorMessage, Throwable err) {
         super(errorMessage, err);
     }
 
