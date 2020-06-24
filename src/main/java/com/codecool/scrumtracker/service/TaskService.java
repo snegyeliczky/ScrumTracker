@@ -1,6 +1,7 @@
 package com.codecool.scrumtracker.service;
 
 import com.codecool.scrumtracker.exception.exceptions.ReachMaximumNumberOfTasksException;
+import com.codecool.scrumtracker.model.AppUser;
 import com.codecool.scrumtracker.model.ScrumTable;
 import com.codecool.scrumtracker.model.Status;
 import com.codecool.scrumtracker.model.Task;
