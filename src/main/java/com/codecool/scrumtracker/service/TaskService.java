@@ -1,25 +1,18 @@
 package com.codecool.scrumtracker.service;
 
+import com.codecool.scrumtracker.exception.exceptions.NotProjectOwnerException;
 import com.codecool.scrumtracker.exception.exceptions.ReachMaximumNumberOfTasksException;
-import com.codecool.scrumtracker.model.AppUser;
-import com.codecool.scrumtracker.model.ScrumTable;
-import com.codecool.scrumtracker.model.Status;
-import com.codecool.scrumtracker.model.Task;
+import com.codecool.scrumtracker.model.*;
 import com.codecool.scrumtracker.model.credentials.TaskTransferCredentials;
-import com.codecool.scrumtracker.repository.AppUserRepository;
-import com.codecool.scrumtracker.repository.ScrumTableRepository;
-import com.codecool.scrumtracker.repository.StatusRepository;
-import com.codecool.scrumtracker.repository.TaskRepository;
+import com.codecool.scrumtracker.repository.*;
+import com.codecool.scrumtracker.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
@@ -39,6 +32,12 @@ public class TaskService {
 
     @Autowired
     ScrumTableRepository scrumTableRepository;
+
+    @Autowired
+    Util util;
+
+    @Autowired
+    ProjectRepository projectRepository;
 
     public void changeTaskStatus(TaskTransferCredentials credentials) throws Exception {
 
@@ -115,9 +114,18 @@ public class TaskService {
     }
 
 
-    public void setFinishTask(UUID taskId) {
-        Task task = taskRepository.findById(taskId).get();
-        task.setFinished(!task.isFinished());
-        taskRepository.save(task);
+    public void setFinishTask(UUID taskId) throws NotProjectOwnerException {
+        Project project = projectRepository.getProjectByTaskId(taskId);
+        if (util.checkUserIsProjectOwner(project)) {
+            Task task = taskRepository.findById(taskId).get();
+            task.setFinished(!task.isFinished());
+            taskRepository.save(task);
+        } else {
+            throw new NotProjectOwnerException(
+                    "Only the project owner can mark finished this task!",
+                    new Throwable());
+        }
+
     }
+
 }

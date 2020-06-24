@@ -1,5 +1,6 @@
 package com.codecool.scrumtracker.controller;
 
+import com.codecool.scrumtracker.exception.exceptions.NotProjectOwnerException;
 import com.codecool.scrumtracker.model.Task;
 import com.codecool.scrumtracker.model.credentials.TaskCredentials;
 import com.codecool.scrumtracker.model.credentials.TaskTransferCredentials;
@@ -34,7 +35,7 @@ public class TaskController {
     }
 
     @PutMapping("/finishtask/{id}")
-    public void setTaskFinished(@PathVariable UUID taskId){
+    public void setTaskFinished(@PathVariable UUID taskId) throws NotProjectOwnerException {
         taskService.setFinishTask(taskId);
     }
 }
