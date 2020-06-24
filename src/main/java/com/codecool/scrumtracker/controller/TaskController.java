@@ -22,11 +22,6 @@ public class TaskController {
         taskService.changeTaskStatus(credentials);
     }
 
-    @PutMapping("/archive/{id}")
-    public void archiveTaskById(@PathVariable UUID id){
-        taskService.archiveById(id);
-    }
-
     @DeleteMapping("/delete/{id}")
     public void deleteTaskById(@PathVariable UUID id) {
         taskService.deleteTaskById(id);
@@ -36,5 +31,10 @@ public class TaskController {
     public Task editTaskData(@PathVariable UUID taskId,
                              @RequestBody Task taskCredentials) throws NoSuchFieldException, IllegalAccessException {
         return taskService.editTaskData(taskId, taskCredentials);
+    }
+
+    @PutMapping("/finishtask/{id}")
+    public void setTaskFinished(@PathVariable UUID taskId){
+        taskService.setFinishTask(taskId);
     }
 }

@@ -114,9 +114,10 @@ public class TaskService {
 
     }
 
-    public void archiveById(UUID id) {
-        Task task = taskRepository.findById(id).get();
-        task.setArchive(!task.isArchive());
+
+    public void setFinishTask(UUID taskId) {
+        Task task = taskRepository.findById(taskId).get();
+        task.setFinished(!task.isFinished());
         taskRepository.save(task);
     }
 }

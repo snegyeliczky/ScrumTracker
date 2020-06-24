@@ -29,7 +29,7 @@ public class Task {
 
     private Integer priority;
 
-    private boolean archive;
+    private boolean finished;
 
     @OneToOne
     private AppUser author;
