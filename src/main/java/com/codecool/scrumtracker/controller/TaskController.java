@@ -35,6 +35,6 @@ public class TaskController {
 
     @PutMapping("/finishtask/{id}")
     public void setTaskFinished(@PathVariable UUID id) throws NotProjectOwnerException {
-        taskService.setFinishTask(taskId);
+        taskService.setFinishTask(id);
     }
 }
