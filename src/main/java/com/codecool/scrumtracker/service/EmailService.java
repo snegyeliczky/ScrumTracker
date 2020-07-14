@@ -127,12 +127,12 @@ public class EmailService /*implements EmailService*/ {
     private String buildTaskRow(Task task) {
         StringBuilder row = new StringBuilder();
         row.append("<tr>");
-        row.append("<td>" + (task.getTitle()!=null ? task.getTitle():"Not set")+ "</td>");
-        row.append("<td>" + (task.getDescription()!=null ?task.getDescription():"Not set'")+ "</td>");
-        row.append("<td>" + (task.getDeadline()!=null ? task.getDeadline():"Not set" )+ "</td>");
-        row.append("<td>" + (task.getPriority()!=null ? task.getPriority():"Not set") + "</td>");
-        row.append("<td>" + (task.getOwner()!=null ? task.getOwner():"Not set") + "</td>");
-        row.append("</tr>");
+        row.append("<td> " + (task.getTitle()!=null ? task.getTitle():"Not set")+ " </td>");
+        row.append("<td> " + (task.getDescription()!=null ?task.getDescription():"Not set")+ " </td>");
+        row.append("<td> " + (task.getDeadline()!=null ? task.getDeadline():"Not set" )+ " </td>");
+        row.append("<td> " + (task.getPriority()!=null ? task.getPriority():"Not set") + " </td>");
+        row.append("<td> " + (task.getOwner()!=null ? task.getOwner():"Not set") + " </td>");
+        row.append("</tr> ");
         return row.toString();
     }
 
