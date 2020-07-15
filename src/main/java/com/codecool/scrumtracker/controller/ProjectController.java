@@ -31,7 +31,7 @@ public class ProjectController {
         return projectService.createNewProject(project);
     }
 
-    @PostMapping("/rename/{id}/{name}")
+    @PutMapping("/rename/{id}/{name}")
     public void renameProject(@PathVariable UUID id, @PathVariable String name){
         projectService.renameProject(id,name);
     }
