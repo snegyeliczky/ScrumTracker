@@ -31,6 +31,11 @@ public class ProjectController {
         return projectService.createNewProject(project);
     }
 
+    @PostMapping("/rename/{id}/{name}")
+    public void renameProject(@PathVariable UUID id, @PathVariable String name){
+        projectService.renameProject(id,name);
+    }
+
 
     @GetMapping("/{id}")
     public Project getProjectById(@PathVariable UUID id) throws NotAuthoritizedException {

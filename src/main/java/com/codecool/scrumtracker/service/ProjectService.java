@@ -236,4 +236,10 @@ public class ProjectService {
         table.setTaskLimit(credentials.getTaskLimit());
         scrumTableRepository.save(table);
     }
+
+    public void renameProject(UUID id, String name) {
+        Project project = projectRepository.findById(id).get();
+        project.setTitle(name);
+        projectRepository.save(project);
+    }
 }
