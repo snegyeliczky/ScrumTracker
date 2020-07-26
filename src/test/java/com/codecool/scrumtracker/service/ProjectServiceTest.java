@@ -15,7 +15,7 @@ import com.codecool.scrumtracker.util.Util;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +52,34 @@ public class ProjectServiceTest {
     ScrumTableRepository scrumTableRepository;
 
     @MockBean
+    UserService userService;
+
+    @MockBean
     Util util;
+
+
+
+    @Test
+    public void testCreateNewProject() {
+
+        ProjectCredentials testProjectCredentials = new ProjectCredentials("test project");
+
+        AppUser testUser = AppUser.builder()
+                .email("test@test.com")
+                .username("testuser")
+                .build();
+
+        when(util.getUserFromContext()).thenReturn(testUser);
+
+        doNothing().when(userService).newProject(any());
+
+        Assertions.assertThat(projectService.createNewProject(testProjectCredentials)
+                .getTable()
+                .getStatuses()
+                .size()
+        ).isEqualTo(3);
+
+    }
 
 
     @Test
@@ -108,6 +135,31 @@ public class ProjectServiceTest {
                 .getAsInt()).isEqualTo(2);
     }
 
+   /* @Test
+    public void testDeleteStatusFromProject() {
+
+        Status toDo = Status.builder()
+                .statusName("To Do")
+                .position(1)
+                .build();
+
+        Status done = Status.builder()
+                .statusName("Done")
+                .position(2)
+                .build();
+
+
+        Set<Status> testStatuses = new HashSet<>(Arrays.asList(toDo, done));
+
+        ScrumTable testTable = ScrumTable.builder()
+                .statuses(testStatuses)
+                .taskLimit(0)
+                .build();
+
+        Mockito.when(scrumTableRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(testTable));
+        Mockito.when(statusRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(toDo));
+
+    }*/
 
 
 

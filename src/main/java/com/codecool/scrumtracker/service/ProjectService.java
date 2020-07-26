@@ -68,7 +68,8 @@ public class ProjectService {
         userService.newProject(user);
         statusRepository.saveAll(initialStates);
         scrumTableRepository.save(table);
-        return projectRepository.save(newProject);
+        projectRepository.save(newProject);
+        return newProject;
     }
 
     private Status createStatus(String name, int position) {
@@ -87,6 +88,7 @@ public class ProjectService {
         return project;
     }
 
+    //Test already added
     public ScrumTable addNewStatusToProject(StatusCredentials status) {
 
         Project project = projectRepository.findById(status.getProjectId()).get();
