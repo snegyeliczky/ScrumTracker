@@ -187,6 +187,7 @@ public class ProjectService {
         projectRepository.deleteById(id);
     }
 
+    //Test already added
     public Set<AppUser> addUserToProject(UUID projectId, UserCredentials userToAdd) {
 
         Project project = projectRepository.findById(projectId).get();

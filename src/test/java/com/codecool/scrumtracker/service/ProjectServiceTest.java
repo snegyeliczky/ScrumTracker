@@ -1,6 +1,7 @@
 package com.codecool.scrumtracker.service;
 
 import com.codecool.scrumtracker.exception.exceptions.NotAuthorizedException;
+import com.codecool.scrumtracker.exception.exceptions.NotProjectOwnerException;
 import com.codecool.scrumtracker.model.AppUser;
 import com.codecool.scrumtracker.model.Project;
 import com.codecool.scrumtracker.model.ScrumTable;
@@ -27,6 +28,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.*;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.*;
 
 
@@ -199,6 +201,18 @@ public class ProjectServiceTest {
         Mockito.when(appUserRepository.findByUsername(any())).thenReturn(java.util.Optional.ofNullable(testUser));
 
         assertThat(projectService.addUserToProject(testProject.getId(), testUserCredentials)).contains(testUser);
+    }
+
+    @Test(expected = NotProjectOwnerException.class)
+    public void testDeleteProjectByIdNotAuthorized() throws NotProjectOwnerException {
+        Project testProject = Project.builder()
+                .title("test project")
+                .build();
+        Mockito.when(projectRepository.findById(any())).thenReturn(Optional.ofNullable(testProject));
+        when(util.checkUserIsProjectOwner(any())).thenReturn(false);
+
+        projectService.deleteProjectById(testProject.getId());
+
     }
 
 
