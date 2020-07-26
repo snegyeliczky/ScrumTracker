@@ -78,7 +78,7 @@ public class ProjectService {
                 .build();
     }
 
-
+    //Test already added
     public Project getProjectById(UUID id) throws NotAuthorizedException {
         Project project = projectRepository.findById(id).get();
         if (!util.projectAuthorization(project)) {
@@ -142,18 +142,24 @@ public class ProjectService {
         int position = status.getPosition();
         statuses.remove(status);
 
-        statuses.forEach(status1 -> {
-            if (status1.getPosition() > position) {
-                status1.setPosition(status1.getPosition() - 1);
-                statusRepository.save(status1);
-            }
-        });
+        reArrangeStatusPositions(statuses, position);
 
         scrumTable.setStatuses(statuses);
         scrumTableRepository.save(scrumTable);
         statusRepository.deleteById(statusId);
 
         deleteTasksFromDatabase(status.getTasks());
+    }
+
+    private void reArrangeStatusPositions(Set<Status> statuses, int position) {
+
+        statuses.forEach(status -> {
+            if (status.getPosition() > position) {
+                status.setPosition(status.getPosition() - 1);
+                statusRepository.save(status);
+            }
+        });
+
     }
 
     public ScrumTable getScrumTableById(UUID id) throws NotAuthorizedException {
@@ -200,7 +206,7 @@ public class ProjectService {
         AppUser user = util.getUserFromContext();
         Set<Project> projects = projectRepository.getProjectByAuthor(user);
         Set<Project> participant = projectRepository.findProjectByParticipantsContains(user);
-        participant.forEach(project -> projects.add(project));
+        projects.addAll(participant);
         return projects;
     }
 
@@ -208,7 +214,7 @@ public class ProjectService {
         AppUser user = util.getUserFromContext();
         Set<Project> projects = projectRepository.getByAuthorAndArchiveIsFalse(user);
         Set<Project> participate = projectRepository.findProjectsByParticipantsContainsAndAndArchiveIsFalse(user);
-        participate.forEach(project->projects.add(project));
+        projects.addAll(participate);
         return projects;
     };
 
@@ -227,7 +233,7 @@ public class ProjectService {
         AppUser user = util.getUserFromContext();
         Set<Project> projects = projectRepository.getProjectByAuthorAndArchiveIsTrue(user);
         Set<Project> participants = projectRepository.getProjectByParticipantsContainsAndArchiveIsTrue(user);
-        participants.forEach(project -> projects.add(project));
+        projects.addAll(participants);
         return projects;
     }
 
