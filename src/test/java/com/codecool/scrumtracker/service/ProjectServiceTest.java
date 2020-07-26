@@ -1,33 +1,85 @@
 package com.codecool.scrumtracker.service;
 
+import com.codecool.scrumtracker.exception.exceptions.NotAuthorizedException;
 import com.codecool.scrumtracker.model.AppUser;
 import com.codecool.scrumtracker.model.Project;
 import com.codecool.scrumtracker.model.Status;
 import com.codecool.scrumtracker.model.credentials.ProjectCredentials;
 import com.codecool.scrumtracker.model.credentials.UserCredentials;
+import com.codecool.scrumtracker.repository.ProjectRepository;
 import com.codecool.scrumtracker.util.Util;
+import org.assertj.core.api.Assertions;
+import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.util.ReflectionTestUtils;
+
 import static org.mockito.Mockito.*;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ProjectServiceTest {
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class ProjectServiceTest {
 
+    @SpyBean
     private ProjectService projectService;
 
-    @BeforeEach
-    private void init(){
-        projectService = new ProjectService();
-    }
+    @MockBean
+    ProjectRepository projectRepository;
+
+    @MockBean
+    Util util;
 
     @Test
-    public void testCreateBaseStatus(){
-        Util myUtil = mock(Util.class);
-        when(myUtil.getUserFromContext()).thenReturn(new AppUser());
-        ProjectCredentials bla = new ProjectCredentials("bla");
-        projectService.createNewProject(bla);
+    public void testGetProjectById() throws NotAuthorizedException {
+
+        Project testProject = Project.builder()
+                .archive(false)
+                .title("test project")
+                .build();
+
+        when(util.projectAuthorization(any())).thenReturn(true);
+
+        Mockito.when(projectRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(testProject));
+
+        Assertions.assertThat(projectService.getProjectById(any())).isEqualTo(testProject);
     }
+
+
+
+
+    /*@Test
+    public void testCreateNewProject() {
+
+        ProjectCredentials credentials = new ProjectCredentials("test project");
+
+        AppUser testUser = AppUser.builder()
+                .email("test@test.com")
+                .username("testUser")
+                .projectsCount(0)
+                .finishedTaskCount(0)
+                .participantCount(0)
+                .tasksCount(0)
+                .build();
+
+        doNothing().when(projectService).statusRepository.saveAll(any());
+        doNothing().when(projectService).scrumTableRepository.save(any());
+        doNothing().when(projectService).projectRepository.save(any());
+        doNothing().when(projectService).userService.newProject(any());
+
+        Project testProject = projectService.createNewProject(credentials);
+        Mockito.when(util.getUserFromContext()).thenReturn(testUser);
+        assertThat(projectService.createNewProject(credentials)).isEqualTo(testProject);
+    }*/
 
 }

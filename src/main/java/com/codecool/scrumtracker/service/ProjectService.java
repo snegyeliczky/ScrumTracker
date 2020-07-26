@@ -71,7 +71,7 @@ public class ProjectService {
         return projectRepository.save(newProject);
     }
 
-    public Status createStatus(String name, int position) {
+    private Status createStatus(String name, int position) {
         return Status.builder()
                 .statusName(name)
                 .position(position)
@@ -141,6 +141,7 @@ public class ProjectService {
         Set<Status> statuses = scrumTable.getStatuses();
         int position = status.getPosition();
         statuses.remove(status);
+
         statuses.forEach(status1 -> {
             if (status1.getPosition() > position) {
                 status1.setPosition(status1.getPosition() - 1);

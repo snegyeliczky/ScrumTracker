@@ -115,7 +115,6 @@ public class TaskService {
 
 
     public void setFinishTask(UUID taskId) throws NotProjectOwnerException {
-        int asd = 1;
         Project project = projectRepository.getProjectByTaskId(taskId);
         if (util.checkUserIsProjectOwner(project)) {
             Task task = taskRepository.findById(taskId).get();
