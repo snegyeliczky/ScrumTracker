@@ -9,10 +9,7 @@ import com.codecool.scrumtracker.model.credentials.ProjectCredentials;
 import com.codecool.scrumtracker.model.credentials.StatusCredentials;
 import com.codecool.scrumtracker.model.credentials.TaskCredentials;
 import com.codecool.scrumtracker.model.credentials.UserCredentials;
-import com.codecool.scrumtracker.repository.ProjectRepository;
-import com.codecool.scrumtracker.repository.ScrumTableRepository;
-import com.codecool.scrumtracker.repository.StatusRepository;
-import com.codecool.scrumtracker.repository.TaskRepository;
+import com.codecool.scrumtracker.repository.*;
 import com.codecool.scrumtracker.util.Util;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
@@ -28,10 +25,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static org.mockito.Mockito.*;
 
@@ -61,6 +55,9 @@ public class ProjectServiceTest {
     TaskRepository taskRepository;
 
     @MockBean
+    AppUserRepository appUserRepository;
+
+    @MockBean
     Util util;
 
 
@@ -77,8 +74,6 @@ public class ProjectServiceTest {
 
         when(util.getUserFromContext()).thenReturn(testUser);
 
-        doNothing().when(userService).newProject(any());
-
         Assertions.assertThat(projectService.createNewProject(testProjectCredentials)
                 .getTable()
                 .getStatuses()
@@ -89,18 +84,28 @@ public class ProjectServiceTest {
 
 
     @Test
-    public void testGetProjectById() throws NotAuthorizedException {
+    public void testGetProjectByIdAuthorized() throws NotAuthorizedException {
 
         Project testProject = Project.builder()
                 .archive(false)
                 .title("test project")
                 .build();
 
-
         when(util.projectAuthorization(any())).thenReturn(true);
-
         Mockito.when(projectRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(testProject));
+        Assertions.assertThat(projectService.getProjectById(any())).isEqualTo(testProject);
+    }
 
+    @Test(expected = NotAuthorizedException.class)
+    public void testGetProjectByIdNotAuthorized() throws NotAuthorizedException {
+
+        Project testProject = Project.builder()
+                .archive(false)
+                .title("test project")
+                .build();
+
+        when(util.projectAuthorization(any())).thenReturn(false);
+        Mockito.when(projectRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(testProject));
         Assertions.assertThat(projectService.getProjectById(any())).isEqualTo(testProject);
     }
 
@@ -171,6 +176,29 @@ public class ProjectServiceTest {
         when(util.projectAuthorization(any())).thenReturn(false);
 
         assertThat(projectService.getScrumTableById(testTable.getId())).isEqualTo(testTable);
+    }
+
+    @Test
+    public void testAddUserToProject() {
+        AppUser testUser = AppUser.builder()
+                .username("testuser")
+                .build();
+
+        Set<AppUser> testParticipants = new HashSet<>();
+
+        Project testProject = Project.builder()
+                .title("test project")
+                .participants(testParticipants)
+                .build();
+
+        UserCredentials testUserCredentials = UserCredentials.builder()
+                .username("testuser")
+                .build();
+
+        Mockito.when(projectRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(testProject));
+        Mockito.when(appUserRepository.findByUsername(any())).thenReturn(java.util.Optional.ofNullable(testUser));
+
+        assertThat(projectService.addUserToProject(testProject.getId(), testUserCredentials)).contains(testUser);
     }
 
 

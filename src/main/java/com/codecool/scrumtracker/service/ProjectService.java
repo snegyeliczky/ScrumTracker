@@ -165,6 +165,7 @@ public class ProjectService {
 
     }
 
+    //Test already added
     public ScrumTable getScrumTableById(UUID id) throws NotAuthorizedException {
         ScrumTable table = scrumTableRepository.findById(id).get();
         Project project = projectRepository.getProjectByTable(table).get();
