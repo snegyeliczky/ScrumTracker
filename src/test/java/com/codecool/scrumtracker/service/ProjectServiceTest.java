@@ -7,10 +7,12 @@ import com.codecool.scrumtracker.model.ScrumTable;
 import com.codecool.scrumtracker.model.Status;
 import com.codecool.scrumtracker.model.credentials.ProjectCredentials;
 import com.codecool.scrumtracker.model.credentials.StatusCredentials;
+import com.codecool.scrumtracker.model.credentials.TaskCredentials;
 import com.codecool.scrumtracker.model.credentials.UserCredentials;
 import com.codecool.scrumtracker.repository.ProjectRepository;
 import com.codecool.scrumtracker.repository.ScrumTableRepository;
 import com.codecool.scrumtracker.repository.StatusRepository;
+import com.codecool.scrumtracker.repository.TaskRepository;
 import com.codecool.scrumtracker.util.Util;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
@@ -29,6 +31,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import static org.mockito.Mockito.*;
 
@@ -53,6 +56,9 @@ public class ProjectServiceTest {
 
     @MockBean
     UserService userService;
+
+    @MockBean
+    TaskRepository taskRepository;
 
     @MockBean
     Util util;
@@ -134,6 +140,40 @@ public class ProjectServiceTest {
                 .max()
                 .getAsInt()).isEqualTo(2);
     }
+
+    @Test
+    public void testGetScrumTableByIdAuthorized() throws NotAuthorizedException {
+        ScrumTable testTable = ScrumTable.builder()
+                .taskLimit(0)
+                .build();
+        Project testProject = Project.builder()
+                .title("test project")
+                .build();
+
+        Mockito.when(scrumTableRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(testTable));
+        Mockito.when(projectRepository.getProjectByTable(any())).thenReturn(java.util.Optional.ofNullable(testProject));
+        when(util.projectAuthorization(any())).thenReturn(true);
+
+        assertThat(projectService.getScrumTableById(testTable.getId())).isEqualTo(testTable);
+    }
+
+    @Test(expected = NotAuthorizedException.class)
+    public void testGetScrumTableByIdNotAuthorized() throws NotAuthorizedException {
+        ScrumTable testTable = ScrumTable.builder()
+                .taskLimit(0)
+                .build();
+        Project testProject = Project.builder()
+                .title("test project")
+                .build();
+
+        Mockito.when(scrumTableRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(testTable));
+        Mockito.when(projectRepository.getProjectByTable(any())).thenReturn(java.util.Optional.ofNullable(testProject));
+        when(util.projectAuthorization(any())).thenReturn(false);
+
+        assertThat(projectService.getScrumTableById(testTable.getId())).isEqualTo(testTable);
+    }
+
+
 
    /* @Test
     public void testDeleteStatusFromProject() {

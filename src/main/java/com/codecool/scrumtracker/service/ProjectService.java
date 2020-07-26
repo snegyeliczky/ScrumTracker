@@ -51,6 +51,7 @@ public class ProjectService {
         return table;
     }
 
+    //Test already added
     public Project createNewProject(ProjectCredentials project) {
         AppUser user = util.getUserFromContext();
 
