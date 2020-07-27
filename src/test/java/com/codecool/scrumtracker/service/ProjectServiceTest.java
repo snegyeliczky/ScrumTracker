@@ -285,8 +285,25 @@ public class ProjectServiceTest {
         Mockito.when(util.getUserFromContext()).thenReturn(testUser);
         Mockito.when(projectRepository.findProjectsByParticipantsContainsAndAndArchiveIsFalse(any())).thenReturn(projects);
         assertThat(projectService.getParticipateProjects()).contains(testProject);
+    }
+
+    @Test
+    public void testGeArchiveProjects() {
+        AppUser testUser = AppUser.builder()
+                .username("testuser")
+                .build();
+        Project testProject = Project.builder()
+                .title("test project")
+                .build();
+        Set<Project> projects = new HashSet<>();
+        projects.add(testProject);
+        Mockito.when(util.getUserFromContext()).thenReturn(testUser);
+        Mockito.when(projectRepository.getProjectByAuthorAndArchiveIsTrue(any())).thenReturn(projects);
+        Mockito.when(projectRepository.getProjectByParticipantsContainsAndArchiveIsTrue(any())).thenReturn(projects);
+        assertThat(projectService.geArchiveProjects()).contains(testProject);
 
     }
+
 
 
 

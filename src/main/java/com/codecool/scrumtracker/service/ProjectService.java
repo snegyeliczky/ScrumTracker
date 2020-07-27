@@ -239,6 +239,7 @@ public class ProjectService {
         return projectRepository.findProjectsByParticipantsContainsAndAndArchiveIsFalse(user);
     }
 
+    //Test already added
     public Set<Project> geArchiveProjects() {
         AppUser user = util.getUserFromContext();
         Set<Project> projects = projectRepository.getProjectByAuthorAndArchiveIsTrue(user);
