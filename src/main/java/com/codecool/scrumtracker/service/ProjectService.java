@@ -187,7 +187,7 @@ public class ProjectService {
         tasks.forEach(task -> taskRepository.deleteById(task.getId()));
     }
 
-    //TODO
+
     public void deleteProjectById(UUID id) throws NotProjectOwnerException {
         Project project = projectRepository.findById(id).get();
         if (!util.checkUserIsProjectOwner(project)) {
@@ -243,7 +243,6 @@ public class ProjectService {
     //Test already added
     public Set<Project> getParticipateProjects() {
         AppUser user = util.getUserFromContext();
-        //Set<Project> projectsByParticipantsContainsAndAndArchiveIsFalse = projectRepository.findProjectsByParticipantsContainsAndAndArchiveIsFalse(user);
         return projectRepository.findProjectsByParticipantsContainsAndAndArchiveIsFalse(user);
     }
 
