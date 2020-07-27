@@ -6,7 +6,6 @@ import com.codecool.scrumtracker.model.Task;
 import com.codecool.scrumtracker.repository.ProjectRepository;
 import com.codecool.scrumtracker.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;

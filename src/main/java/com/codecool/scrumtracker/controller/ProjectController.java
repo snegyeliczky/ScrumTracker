@@ -86,7 +86,6 @@ public class ProjectController {
     }
 
 
-
     @GetMapping("/getactiveprojects")
     public Set<Project> getActiveProject() {
         return projectService.getMyActiveProjects();
@@ -102,7 +101,6 @@ public class ProjectController {
     public Set<Project> getArchiveProjects() {
         return projectService.geArchiveProjects();
     }
-
 
 
     @PostMapping("/email/{projectId}")
