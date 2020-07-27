@@ -179,6 +179,7 @@ public class ProjectService {
         tasks.forEach(task -> taskRepository.deleteById(task.getId()));
     }
 
+    //TODO
     public void deleteProjectById(UUID id) throws NotProjectOwnerException {
         Project project = projectRepository.findById(id).get();
         if (!util.checkUserIsProjectOwner(project)) {
@@ -207,6 +208,7 @@ public class ProjectService {
         projectRepository.save(project);
     }
 
+    //Test already added
     public Set<Project> getMyProjects() {
         AppUser user = util.getUserFromContext();
         Set<Project> projects = projectRepository.getProjectByAuthor(user);
@@ -215,6 +217,7 @@ public class ProjectService {
         return projects;
     }
 
+    //Test already added
     public Set<Project> getMyProjectsWithoutArchive() {
         AppUser user = util.getUserFromContext();
         Set<Project> projects = projectRepository.getByAuthorAndArchiveIsFalse(user);

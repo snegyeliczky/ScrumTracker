@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -215,58 +216,46 @@ public class ProjectServiceTest {
 
     }
 
-
-
-   /* @Test
-    public void testDeleteStatusFromProject() {
-
-        Status toDo = Status.builder()
-                .statusName("To Do")
-                .position(1)
-                .build();
-
-        Status done = Status.builder()
-                .statusName("Done")
-                .position(2)
-                .build();
-
-
-        Set<Status> testStatuses = new HashSet<>(Arrays.asList(toDo, done));
-
-        ScrumTable testTable = ScrumTable.builder()
-                .statuses(testStatuses)
-                .taskLimit(0)
-                .build();
-
-        Mockito.when(scrumTableRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(testTable));
-        Mockito.when(statusRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(toDo));
-
-    }*/
-
-
-
-    /*@Test
-    public void testCreateNewProject() {
-
-        ProjectCredentials credentials = new ProjectCredentials("test project");
+    @Test
+    public void testGetMyProjects() {
 
         AppUser testUser = AppUser.builder()
-                .email("test@test.com")
-                .username("testUser")
-                .projectsCount(0)
-                .finishedTaskCount(0)
-                .participantCount(0)
-                .tasksCount(0)
+                .username("testuser")
                 .build();
 
-        doNothing().when(projectService).statusRepository.saveAll(any());
-        doNothing().when(projectService).scrumTableRepository.save(any());
-        doNothing().when(projectService).projectRepository.save(any());
-        doNothing().when(projectService).userService.newProject(any());
+        Project testProject = Project.builder()
+                .title("test project")
+                .build();
 
-        Project testProject = projectService.createNewProject(credentials);
+        Set<Project> projects = new HashSet<>();
+        projects.add(testProject);
         Mockito.when(util.getUserFromContext()).thenReturn(testUser);
-        assertThat(projectService.createNewProject(credentials)).isEqualTo(testProject);
-    }*/
+        Mockito.when(projectRepository.getByAuthorAndArchiveIsFalse(any())).thenReturn(projects);
+        Mockito.when(projectRepository.findProjectByParticipantsContains(any())).thenReturn(projects);
+
+        assertThat(projectService.getMyProjects()).contains(testProject);
+    }
+
+    @Test
+    public void testGetMyProjectsWithoutArchive() {
+
+        AppUser testUser = AppUser.builder()
+                .username("testuser")
+                .build();
+
+        Project testProject = Project.builder()
+                .title("test project")
+                .build();
+
+        Set<Project> projects = new HashSet<>();
+        projects.add(testProject);
+        Mockito.when(util.getUserFromContext()).thenReturn(testUser);
+        Mockito.when(projectRepository.getByAuthorAndArchiveIsFalse(any())).thenReturn(projects);
+        Mockito.when(projectRepository.findProjectsByParticipantsContainsAndAndArchiveIsFalse(any())).thenReturn(projects);
+
+        assertThat(projectService.getMyProjectsWithoutArchive()).contains(testProject);
+    }
+
+
 
 }
