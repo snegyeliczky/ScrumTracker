@@ -94,11 +94,7 @@ public class ProjectService {
 
         Project project = projectRepository.findById(status.getProjectId()).get();
         ScrumTable table = project.getTable();
-        int max = table.getStatuses()
-                .stream()
-                .mapToInt(Status::getPosition)
-                .max()
-                .orElse(0);
+        int max = getStatusMaxPosition(table);
         Status newStatus = createStatus(status.getStatusName(), max + 1);
         Set<Status> projectStatuses = table.getStatuses();
 
@@ -110,6 +106,14 @@ public class ProjectService {
         projectRepository.save(project);
         return table;
 
+    }
+
+    private int getStatusMaxPosition(ScrumTable table) {
+        return table.getStatuses()
+                .stream()
+                .mapToInt(Status::getPosition)
+                .max()
+                .orElse(0);
     }
 
     public void addNewTask(TaskCredentials taskCredentials) {

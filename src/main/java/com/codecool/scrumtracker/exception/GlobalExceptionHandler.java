@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({ NotAuthorizedException.class })
     public final ResponseEntity<ApiError> handleNotAuthorizedException(Exception ex, WebRequest request) {
         HttpHeaders headers = new HttpHeaders();
-        HttpStatus status = HttpStatus.NOT_FOUND;
+        HttpStatus status = HttpStatus.FORBIDDEN;
         NotAuthorizedException unfe = (NotAuthorizedException) ex;
 
         return handleException(unfe, headers, status, request);
@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({ NotProjectOwnerException.class })
     public final ResponseEntity<ApiError> handleNotProjectOwnerException(Exception ex, WebRequest request) {
         HttpHeaders headers = new HttpHeaders();
-        HttpStatus status = HttpStatus.NOT_FOUND;
+        HttpStatus status = HttpStatus.FORBIDDEN;
         NotProjectOwnerException unfe = (NotProjectOwnerException) ex;
 
         return handleException(unfe, headers, status, request);
@@ -42,7 +42,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({ ReachMaximumNumberOfTasksException.class })
     public final ResponseEntity<ApiError> handleReachMaximumNumberOfTasksException(Exception ex, WebRequest request) {
         HttpHeaders headers = new HttpHeaders();
-        HttpStatus status = HttpStatus.NOT_FOUND;
+        HttpStatus status = HttpStatus.FORBIDDEN;
         ReachMaximumNumberOfTasksException unfe = (ReachMaximumNumberOfTasksException) ex;
 
         return handleException(unfe, headers, status, request);
@@ -60,6 +60,7 @@ public class GlobalExceptionHandler {
         if (HttpStatus.INTERNAL_SERVER_ERROR.equals(status)) {
             request.setAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE, ex, WebRequest.SCOPE_REQUEST);
         }
+        body.setStatus(status);
 
         return new ResponseEntity<>(body, headers, status);
     }
