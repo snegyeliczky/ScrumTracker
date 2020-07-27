@@ -256,6 +256,22 @@ public class ProjectServiceTest {
         assertThat(projectService.getMyProjectsWithoutArchive()).contains(testProject);
     }
 
+    @Test
+    public void testGetMyActiveProjects() {
+        AppUser testUser = AppUser.builder()
+                .username("testuser")
+                .build();
+        Project testProject = Project.builder()
+                .title("test project")
+                .build();
+        Set<Project> projects = new HashSet<>();
+        projects.add(testProject);
+
+        Mockito.when(util.getUserFromContext()).thenReturn(testUser);
+        Mockito.when(projectRepository.getByAuthorAndArchiveIsFalse(any())).thenReturn(projects);
+        assertThat(projectService.getMyActiveProjects()).contains(testProject);
+    }
+
 
 
 }

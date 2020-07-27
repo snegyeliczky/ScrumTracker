@@ -226,6 +226,7 @@ public class ProjectService {
         return projects;
     };
 
+    //Test already added
     public Set<Project> getMyActiveProjects() {
         AppUser user = util.getUserFromContext();
         return projectRepository.getByAuthorAndArchiveIsFalse(user);
