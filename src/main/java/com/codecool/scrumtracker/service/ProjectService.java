@@ -232,9 +232,10 @@ public class ProjectService {
         return projectRepository.getByAuthorAndArchiveIsFalse(user);
     }
 
+    //Test already added
     public Set<Project> getParticipateProjects() {
         AppUser user = util.getUserFromContext();
-        Set<Project> projectsByParticipantsContainsAndAndArchiveIsFalse = projectRepository.findProjectsByParticipantsContainsAndAndArchiveIsFalse(user);
+        //Set<Project> projectsByParticipantsContainsAndAndArchiveIsFalse = projectRepository.findProjectsByParticipantsContainsAndAndArchiveIsFalse(user);
         return projectRepository.findProjectsByParticipantsContainsAndAndArchiveIsFalse(user);
     }
 

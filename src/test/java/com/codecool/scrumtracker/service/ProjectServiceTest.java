@@ -272,6 +272,22 @@ public class ProjectServiceTest {
         assertThat(projectService.getMyActiveProjects()).contains(testProject);
     }
 
+    @Test
+    public void testGetParticipateProjects() {
+        AppUser testUser = AppUser.builder()
+                .username("testuser")
+                .build();
+        Project testProject = Project.builder()
+                .title("test project")
+                .build();
+        Set<Project> projects = new HashSet<>();
+        projects.add(testProject);
+        Mockito.when(util.getUserFromContext()).thenReturn(testUser);
+        Mockito.when(projectRepository.findProjectsByParticipantsContainsAndAndArchiveIsFalse(any())).thenReturn(projects);
+        assertThat(projectService.getParticipateProjects()).contains(testProject);
+
+    }
+
 
 
 }
