@@ -116,14 +116,18 @@ public class ProjectService {
                 .orElse(0);
     }
 
-    public void addNewTask(TaskCredentials taskCredentials) {
-        AppUser user = util.getUserFromContext();
-        Status status = statusRepository.findById(taskCredentials.getStatusId()).get();
-        int newPosition = status.getTasks()
+    private int getTaskMaxPosition(Status status) {
+        return status.getTasks()
                 .stream()
                 .mapToInt(Task::getPosition)
                 .max()
                 .orElse(0);
+    }
+
+    public void addNewTask(TaskCredentials taskCredentials) {
+        AppUser user = util.getUserFromContext();
+        Status status = statusRepository.findById(taskCredentials.getStatusId()).get();
+        int newPosition = getTaskMaxPosition(status);
         Task builtTask = Task.builder()
                 .author(user)
                 .title(taskCredentials.getTitle())
