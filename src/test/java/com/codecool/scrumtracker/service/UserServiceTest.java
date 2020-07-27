@@ -40,4 +40,6 @@ public class UserServiceTest {
 
         assertThat(userService.searchUser(UserCredentials.builder().build())).isEqualTo(testUsers);
     }
+
+
 }

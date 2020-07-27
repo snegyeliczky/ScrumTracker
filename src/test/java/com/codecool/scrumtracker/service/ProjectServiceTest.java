@@ -8,32 +8,27 @@ import com.codecool.scrumtracker.model.ScrumTable;
 import com.codecool.scrumtracker.model.Status;
 import com.codecool.scrumtracker.model.credentials.ProjectCredentials;
 import com.codecool.scrumtracker.model.credentials.StatusCredentials;
-import com.codecool.scrumtracker.model.credentials.TaskCredentials;
 import com.codecool.scrumtracker.model.credentials.UserCredentials;
 import com.codecool.scrumtracker.repository.*;
 import com.codecool.scrumtracker.util.Util;
 import org.assertj.core.api.Assertions;
-import org.junit.Before;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.*;
-
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.mockito.Mockito.*;
-
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -63,17 +58,27 @@ public class ProjectServiceTest {
     @MockBean
     Util util;
 
+    private AppUser testUser;
 
+    private Project testProject;
+
+    @BeforeEach
+    public void init() {
+         testUser = AppUser.builder()
+                .email("test@test.com")
+                .username("testuser")
+                .build();
+
+        testProject = Project.builder()
+                .archive(false)
+                .title("test project")
+                .build();
+    }
 
     @Test
     public void testCreateNewProject() {
 
         ProjectCredentials testProjectCredentials = new ProjectCredentials("test project");
-
-        AppUser testUser = AppUser.builder()
-                .email("test@test.com")
-                .username("testuser")
-                .build();
 
         when(util.getUserFromContext()).thenReturn(testUser);
 
@@ -85,31 +90,28 @@ public class ProjectServiceTest {
 
     }
 
-
     @Test
     public void testGetProjectByIdAuthorized() throws NotAuthorizedException {
-
-        Project testProject = Project.builder()
+        Project innerTestProject = Project.builder()
                 .archive(false)
                 .title("test project")
                 .build();
-
         when(util.projectAuthorization(any())).thenReturn(true);
-        Mockito.when(projectRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(testProject));
-        Assertions.assertThat(projectService.getProjectById(any())).isEqualTo(testProject);
+        Mockito.when(projectRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(innerTestProject));
+        Assertions.assertThat(projectService.getProjectById(any())).isEqualTo(innerTestProject);
     }
 
     @Test(expected = NotAuthorizedException.class)
     public void testGetProjectByIdNotAuthorized() throws NotAuthorizedException {
 
-        Project testProject = Project.builder()
+        Project innerTestProject = Project.builder()
                 .archive(false)
                 .title("test project")
                 .build();
 
         when(util.projectAuthorization(any())).thenReturn(false);
-        Mockito.when(projectRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(testProject));
-        Assertions.assertThat(projectService.getProjectById(any())).isEqualTo(testProject);
+        Mockito.when(projectRepository.findById(any())).thenReturn(java.util.Optional.ofNullable(innerTestProject));
+        Assertions.assertThat(projectService.getProjectById(any())).isEqualTo(innerTestProject);
     }
 
     @Test
@@ -184,10 +186,11 @@ public class ProjectServiceTest {
     @Test
     public void testAddUserToProject() {
         AppUser testUser = AppUser.builder()
+                .email("test@test.com")
                 .username("testuser")
                 .build();
-
         Set<AppUser> testParticipants = new HashSet<>();
+        testParticipants.add(testUser);
 
         Project testProject = Project.builder()
                 .title("test project")
@@ -219,14 +222,6 @@ public class ProjectServiceTest {
     @Test
     public void testGetMyProjects() {
 
-        AppUser testUser = AppUser.builder()
-                .username("testuser")
-                .build();
-
-        Project testProject = Project.builder()
-                .title("test project")
-                .build();
-
         Set<Project> projects = new HashSet<>();
         projects.add(testProject);
         Mockito.when(util.getUserFromContext()).thenReturn(testUser);
@@ -239,14 +234,6 @@ public class ProjectServiceTest {
     @Test
     public void testGetMyProjectsWithoutArchive() {
 
-        AppUser testUser = AppUser.builder()
-                .username("testuser")
-                .build();
-
-        Project testProject = Project.builder()
-                .title("test project")
-                .build();
-
         Set<Project> projects = new HashSet<>();
         projects.add(testProject);
         Mockito.when(util.getUserFromContext()).thenReturn(testUser);
@@ -258,12 +245,7 @@ public class ProjectServiceTest {
 
     @Test
     public void testGetMyActiveProjects() {
-        AppUser testUser = AppUser.builder()
-                .username("testuser")
-                .build();
-        Project testProject = Project.builder()
-                .title("test project")
-                .build();
+
         Set<Project> projects = new HashSet<>();
         projects.add(testProject);
 
@@ -274,12 +256,6 @@ public class ProjectServiceTest {
 
     @Test
     public void testGetParticipateProjects() {
-        AppUser testUser = AppUser.builder()
-                .username("testuser")
-                .build();
-        Project testProject = Project.builder()
-                .title("test project")
-                .build();
         Set<Project> projects = new HashSet<>();
         projects.add(testProject);
         Mockito.when(util.getUserFromContext()).thenReturn(testUser);
@@ -289,12 +265,6 @@ public class ProjectServiceTest {
 
     @Test
     public void testGeArchiveProjects() {
-        AppUser testUser = AppUser.builder()
-                .username("testuser")
-                .build();
-        Project testProject = Project.builder()
-                .title("test project")
-                .build();
         Set<Project> projects = new HashSet<>();
         projects.add(testProject);
         Mockito.when(util.getUserFromContext()).thenReturn(testUser);
