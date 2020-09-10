@@ -129,9 +129,9 @@ public class EmailService /*implements EmailService*/ {
         row.append("<tr>");
         row.append("<td> " + (task.getTitle()!=null ? task.getTitle():"Not set")+ " </td>");
         row.append("<td> " + (task.getDescription()!=null ?task.getDescription():"Not set")+ " </td>");
-        row.append("<td> " + (task.getDeadline()!=null ? task.getDeadline():"Not set" )+ " </td>");
+        row.append("<td> " + (task.getDeadline()!=null ? task.getDeadline().getMonthValue()+"."+task.getDeadline().getDayOfMonth():"Not set" )+ " </td>");
         row.append("<td> " + (task.getPriority()!=null ? task.getPriority():"Not set") + " </td>");
-        row.append("<td> " + (task.getOwner()!=null ? task.getOwner():"Not set") + " </td>");
+        row.append("<td> " + (task.getOwner()!=null ? task.getOwner().getUsername():"Not set") + " </td>");
         row.append("</tr> ");
         return row.toString();
     }

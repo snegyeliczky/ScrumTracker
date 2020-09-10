@@ -1,17 +1,10 @@
 package com.codecool.scrumtracker.controller;
 
 import com.codecool.scrumtracker.model.credentials.UserCredentials;
-import com.codecool.scrumtracker.repository.AppUserRepository;
-import com.codecool.scrumtracker.security.JwtTokenServices;
+
 import com.codecool.scrumtracker.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;

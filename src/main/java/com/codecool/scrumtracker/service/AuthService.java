@@ -37,6 +37,7 @@ public class AuthService {
     @Autowired
     private AppUserRepository appUserRepository;
 
+
     public void registration(UserCredentials newUser) {
         AppUser appUser = AppUser.builder()
                 .username(newUser.getUsername())
@@ -69,6 +70,7 @@ public class AuthService {
             cookie.setPath("/");
 
             response.addCookie(cookie);
+
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
             model.put("roles", roles);
